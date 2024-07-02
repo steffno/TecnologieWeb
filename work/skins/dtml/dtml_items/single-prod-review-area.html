@@ -1,0 +1,87 @@
+<p id="val-p">Valutazione:</p>
+<ul id="ul-new-review" class="list">
+    <li>
+        <a href="javascript:setReviewVal(1)">
+            <i class="fa fa-star stars"></i>
+        </a>
+    </li>
+    <li>
+        <a href="javascript:setReviewVal(2)">
+            <i class="fa fa-star stars"></i>
+        </a>
+    </li>
+    <li>
+        <a href="javascript:setReviewVal(3)">
+            <i class="fa fa-star stars"></i>
+        </a>
+    </li>
+    <li>
+        <a href="javascript:setReviewVal(4)">
+            <i class="fa fa-star stars"></i>
+        </a>
+    </li>
+    <li>
+        <a href="javascript:setReviewVal(5)">
+            <i class="fa fa-star stars"></i>
+        </a>
+    </li>
+    <li>
+        <div>
+            <h6 id="new-review-val" hidden></h6>
+            <p id="new-review-val-text"></p>
+        </div>
+    </li>
+</ul>
+<form id="reviewform" class="row contact_form" action="" method="post"
+      novalidate="novalidate">
+    <div class="col-md-12">
+        <div class="form-group">
+            <textarea style="height: 180px" class="form-control" name="message" rows="1"
+                      placeholder="Recensione"></textarea>
+            <input id="val-prod" hidden name="val-prod" value="">
+            <input id="id-prod" hidden name="id-prod" value="<[IDPROD]>">
+        </div>
+    </div>
+    <div class="col-md-12 text-right">
+        <button id="insert-rev" type="submit" value="submit" class="btn_3">
+            Invia
+        </button>
+    </div>
+</form>
+</div>
+
+<script src="//code.jquery.com/jquery-1.12.4.js"></script>
+<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="skins/js/sweetalert.min.js"></script>
+
+<script>
+
+    $('#insert-rev').on('click', function (e) {
+        var form = $('#reviewform');
+        e.preventDefault();
+        $.ajax({
+            url: 'include/insert-review.php',
+            type: 'POST',
+            data: form.serialize()
+        }).done(function (response) {
+            if (response !== "" && response === "inserito") {
+                swal({
+                    title: "Complimenti!",
+                    text: "Recensione inserita con successo!",
+                    type: "success"
+                }).then(function () {
+                    window.location.href = window.location.href;
+                });
+            } else {
+                swal({
+                    title: "Errore!",
+                    text: "Ops! Si è verificato un errore",
+                    type: "error"
+                });
+            }
+        });
+        return false;
+    })
+
+
+</script>

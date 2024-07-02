@@ -1,0 +1,275 @@
+
+
+    <!--================Category Product Area =================-->
+    <section class="cat_product_area section_padding">
+        <div class="container">
+            <div class="x100xauto banner_part rounded text-center padding_bottom_25 d-flex align-items-center justify-content-center">
+                <h3 class="white-text">Il negozio</h3>
+            </div>
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="left_sidebar_area">
+                        <aside class="left_widgets p_filter_widgets">
+                            <div class="l_w_title padding_bottom_25">
+                                <a style="font-size: 20px; color: black" class="maincat" href="">Categorie</a>
+                            </div>
+                            <div class="widgets_inner">
+                                <ul id="cattable" class="list">
+                                    <[foreach]>
+                                        <[categories]>
+                                    <[/foreach]>
+                                </ul>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <div class="row">
+                        <div class="pager-top col-lg-12">
+                            <div class="product_top_bar d-flex justify-content-between align-items-center">
+                                <div class="single_product_menu">
+                                    <p><span><[item_count]></span> Prodotti Trovati</p>
+                                </div>
+
+
+                                <div class="single_product_menu dropdown d-flex">
+                                    <p>Ordina per</p>
+                                    <i style="padding-left: 4px; padding-top: 8px;" class="fas fa-chevron-down"></i>
+                                    <label>
+                                        <select id="sorter" style="color: white" class="select dropdown-menu" onchange="copyTextValue()">
+                                            <[foreach]>
+                                                <[opts]>
+                                            <[/foreach]>
+                                        </select>
+                                    </label>
+                                    <a hidden id="sender" href=""></a>
+                                </div>
+
+
+                                <div class="single_product_menu d-flex">
+                                    <p style="margin-right: -15px;">Mostrane:</p>
+                                    <div class="top_pageniation">
+                                        <ul>
+                                            <li class="page-item"><a id="opt9" class="page-link2" href="">9</a></li>
+                                            <li class="page-item"><a id="opt18" class="page-link2" href="">18</a></li>
+                                            <li class="page-item"><a id="opt27" class="page-link2" href="">27</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="single_product_menu d-flex">
+                                    <div class="input-group">
+                                        <input id="finder_param" type="text" class="form-control" placeholder="Cerca"
+                                            aria-describedby="inputGroupPrepend">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroupPrepend">
+                                                <a id="finder" class="ti-search" href=""></a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- JQUERY FILLING -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="star-setter row align-items-center latest_product_inner">
+                        <[foreach]>
+                            <[item]>
+                        <[/foreach]>
+                        <div class="col-lg-12">
+                            <ul class="pager pagination justify-content-center">
+                                <[foreach]>
+                                    <[page_shifter]>
+                                <[/foreach]>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--================End Category Product Area =================-->
+
+    <!-- product_list part start-->
+    <section class="product_list best_seller">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-12">
+                    <div class="section_tittle text-center">
+                        <h2>Prodotti con più stelle</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row align-items-center justify-content-between">
+                <div class="col-lg-12">
+                    <div class="star-setter best_product_slider owl-carousel" >
+                        <[foreach]>
+                            <[better_rated]>
+                        <[/foreach]>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- product_list part end-->
+
+    <!-- product_list part start-->
+    <section class="product_list best_seller">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-12">
+                    <div class="section_tittle text-center">
+                        <h2>Più venduti</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row align-items-center justify-content-between">
+                <div class="col-lg-12">
+                    <div class="star-setter best_product_slider owl-carousel">
+                        <[foreach]>
+                            <[mostly_sold]>
+                        <[/foreach]>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- product_list part end-->
+
+    <!--================ Raw scripts =================-->
+    <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+        $(document).ready(function ()
+        {
+            var queryString = queryParams();
+            if (queryString !== '')
+            {
+                var pageno = queryString.split('page=')[1];
+                if (pageno.length > 1)
+                    pageno = pageno.split('&')[0];
+
+                $('.pagination .page-item').each(function ()
+                {
+                    if ($(this).text().trim() == pageno)
+                        $(this).addClass('active2');
+                });
+            }
+        });
+
+        $('.pager-top').append($('.pager').clone());
+
+        function sanitizer(item, pattern)
+        {
+            var cmd = "";
+
+            for (let i = 0; i < item.length; i++) {
+                if (!item[i].match(pattern) && item[i] !== "") cmd = cmd  + "&" + item[i];
+            }
+
+            return cmd;
+        }
+
+        function queryParams()
+        {
+            const queryString = window.location.search;
+            if (queryString === "") return "";
+            else if (queryString.split('?').length === 1) return "";
+            else return queryString.split('?')[1];
+        }
+
+        function copyTextValue()
+        {
+            var cmd = "?sort=" + document.getElementById("sorter").value + sanitizer(queryParams().split('&'), "sort");
+
+            $("#sender").attr("href", cmd);
+            $("#sender")[0].click();
+        }
+
+        $("#finder").on("click", function()
+        {
+            var sanit = sanitizer(queryParams().split('&'), "page");
+            var qrystr = "&page=1" + sanit;
+
+            var param = $('#finder_param').val();
+            param = param.replaceAll(" ", "_");
+
+            qrystr = "?find=" + param + sanitizer(qrystr.split('&'), "find");
+            $("#finder").attr("href", qrystr);
+            $("#finder")[0].click();
+        });
+
+        $(".maincat").on("click", function()
+        {
+            var sanit = sanitizer(queryParams().split('&'), "cat");
+            sanit = '?' + sanitizer(sanit.split('&'), "find");
+
+            $(this).attr("href", sanit);
+            $(this)[0].click();
+        });
+
+        $("#opt9").on("click", function()
+        {
+            var sanit = sanitizer(queryParams().split('&'), "page");
+            sanit = sanitizer(sanit.split('&'), "limit");
+            sanit = sanitizer(sanit.split('&'), "slice");
+
+            var qrystr = "?page=1&limit=9" + sanit;
+            $("#opt9").attr("href", qrystr);
+            $("#opt9")[0].click();
+        });
+
+        $("#opt18").on("click", function()
+        {
+            var sanit = sanitizer(queryParams().split('&'), "page");
+            sanit = sanitizer(sanit.split('&'), "limit");
+            sanit = sanitizer(sanit.split('&'), "slice");
+
+            var qrystr = "?page=1&limit=18" + sanit;
+            $("#opt18").attr("href", qrystr);
+            $("#opt18")[0].click();
+        });
+
+        $("#opt27").on("click", function()
+        {
+            var sanit = sanitizer(queryParams().split('&'), "page");
+            sanit = sanitizer(sanit.split('&'), "limit");
+            sanit = sanitizer(sanit.split('&'), "slice");
+
+            var qrystr = "?page=1&limit=27" + sanit;
+            $("#opt27").attr("href", qrystr);
+            $("#opt27")[0].click();
+        });
+
+        $(".star-setter").each(function(){
+            $(this).find('.single_product_text').each(
+                function ()
+                {
+                    var supp = $(this);
+                    $(this).find('.star-widget').find('label:not("#star-val")').each(
+                        function (index, elem) {
+                            if (index < $('.star-setter').find(supp).find('#star-val').text())
+                            {
+                                elem.style.color = '#FFDD44FF';
+                            }
+                        }
+                    );
+                })
+        });
+
+        $("#cattable").find('li').children().each(
+            function ()
+            {
+                var cat = $(this).text();
+                cat = cat.replaceAll(" ", "_");
+
+                if(window.location.search.match(cat) !== null)
+                {
+                    $(this).css("color", '#0a4968')
+                        .css("font-weight", "bold")
+                        .css("font-size", "16px");
+                }
+            }
+        );
+    </script>

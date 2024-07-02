@@ -1,0 +1,30 @@
+
+ <section class="section dashboard">
+    <div class="card top-selling overflow-auto" style="padding: 1% 1%;">
+        
+<table class="table table-borderless table-sm">
+    <thead>
+      <tr> 
+        <th scope="col">Immagine</th>
+        <th scope="col">Nome</th>
+        <th scope="col">Prezzo</th>
+        <th scope="col">Codice</th>
+        <th scope="col">Quantità</th>
+      </tr>
+    </thead>
+    <tbody>
+        <[foreach]>
+      <tr>
+        <td><img src="<[img]>" alt=""></td>
+        <td><[nome]></td>
+        <td class="fw-bold"><[prezzo]></td>
+        <td><[codice]></td>
+        <td><[quantita]></td>
+      </tr>
+      <[/foreach]>
+    </tbody>
+  </table></div>
+
+  
+</div>
+</section>

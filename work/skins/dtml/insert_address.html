@@ -1,0 +1,422 @@
+<section class="login_part padding_top_50">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+                <div class="login_part_form">
+                    <div class="login_part_form_iner">
+                        <form class="row d-flex justify-content-center align-items-center h-100"
+                              action="address-setup.php?set=1" method="post" novalidate="novalidate">
+                            <h4 class="padding_bottom_50" style="color: #516bbd">Inserisci il tuo indirizzo</h4>
+
+                            <style>
+                                .error {
+                                    color: red;
+                                }
+                            </style>
+                            <div class="col-md-12 form-group p_star"><p class="error" id="error"></p></div>
+                            <div class="col-md-12 form-group p_star">
+                                <div class="form-floating2">
+                                    <select class="form-control" id="regione"><[reg]>
+                                        <!-- JQUERY FILLING -->
+                                    </select>
+                                    <label for="regione">Regione</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <a id="insert-prov" class="padding_left_10" href="" hidden>Non c'è la tua provincia? Inseriscila</a>
+                                <div class="form-floating2">
+                                    <select class="form-control" id="provincia"><[pro]>
+                                        <!-- JQUERY FILLING -->
+                                    </select>
+                                <label for="provincia">Provincia</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <a id="insert-city" class="padding_left_10" href="" hidden>Non c'è la tua citta? Inseriscila</a>
+                                <div class="form-floating2">
+                                    <select class="form-control" id="citta"><[cit]>
+                                        <!-- JQUERY FILLING -->
+                                    </select>
+                                    <label for="citta">Citta</label>
+                                </div>
+                            </div>
+                            <div class="col-md-8 form-group p_star">
+                                <div class="form-floating2">
+                                    <input type="text" class="form-control" id="address" name="address" value="<[via]>"
+                                           placeholder="Indirizzo">
+                                    <label for="address">Indirizzo</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4 form-group p_star">
+                                <div class="form-floating2">
+                                    <input type="text" class="form-control" id="number_address" name="number_address"
+                                           value="<[num]>"
+                                           placeholder="n°">
+                                    <label for="number_address">Numero</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <div class="form-floating2">
+                                    <input type="text" class="form-control" id="postal_code" name="postal_code" value="<[cap]>"
+                                           placeholder="CAP">
+                                    <label for="postal_code">CAP</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <div class="form-floating2">
+                                    <input type="text" class="form-control" id="phone_number" name="phone_number" value="<[tel]>"
+                                           placeholder="Numero di telefono">
+                                    <label for="phone_number">Numero di telefono</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <h6 style="color: #ffa4a4">* Non obbligatorio</h6>
+                                <div class="form-floating2">
+                                    <input type="text" class="form-control" id="company" name="company" value="<[iva]>"
+                                           placeholder="Partita IVA">
+                                    <label for="company">Numero di partita iva</label>
+                                </div>
+                            </div>
+
+                            <div class="padding_top_50 p-3 mb-4">
+                                <div class="text-center">
+                                    <a style="color: white;" class="btn_3" id="indietro" onclick="history.back();">Indietro</a>
+                                    <a style="color: white;" id="salva" class="btn_3">Salva</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Script per far shackerare la scritta -->
+<script src="//code.jquery.com/jquery-1.12.4.js"></script>
+<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    var errore = document.getElementById('error');
+    if (errore.getAttribute.length != 0) {
+
+        $("#error").effect("shake");
+    }
+
+    $(document).ready(function() {
+        $('#salva').css('cursor', 'pointer');
+        $('#indietro').css('cursor', 'pointer');
+
+
+        $.ajax({
+            url: 'include/get-stato-italia_ajax.php',
+            type: 'POST',
+            data: {
+                regione: true
+            }
+        }).done(function (response) {
+            var data = JSON.parse(response);
+
+            $('#regione').append('<option value="'+-1+'">'+ 'Seleziona Regione' +'</option>');
+            data.forEach(function (elem){
+                $('#regione').append('<option value="'+elem+'">'+elem+'</option>');
+            });
+        });
+    });
+
+
+    $('#regione').on('change', function ()
+    {
+        var reg = $('#regione').val();
+        var pro = $('#provincia').val();
+
+        if (reg != -1)
+        {
+            $.ajax({
+                url: 'include/get-stato-italia_ajax.php',
+                type: 'POST',
+                data: {
+                    reg_prov_assoc: reg
+                }
+            }).done(function (response) {
+                var data = JSON.parse(response);
+
+                $('#provincia').children().remove();
+                $('#citta').children().remove();
+
+                $('#provincia').append('<option value="'+-1+'">'+ 'Seleziona Provincia' +'</option>');
+                data.forEach(function (elem){
+                    $('#provincia').append('<option value="'+elem+'">'+elem+'</option>');
+                });
+
+                bindInsertProvAction(reg, pro);
+
+            });
+        }
+        else
+        {
+            $('#provincia').children().remove();
+            $('#citta').children().remove();
+        }
+    });
+
+    $('#provincia').on('change', function ()
+    {
+        var reg = $('#regione').val();
+        var pro = $('#provincia').val();
+
+        if (pro != -1)
+        {
+            $.ajax({
+                url: 'include/get-stato-italia_ajax.php',
+                type: 'POST',
+                data: {
+                    citta: pro
+                }
+            }).done(function (response) {
+                var data = JSON.parse(response);
+
+                $('#citta').children().remove();
+
+                $('#citta').append('<option value="'+-1+'">'+ 'Seleziona Città' +'</option>');
+                data.forEach(function (elem){
+                    $('#citta').append('<option value="'+elem+'">'+elem+'</option>');
+                });
+
+                let anchor = document.getElementById('insert-city');
+                anchor.removeAttribute("hidden");
+
+                bindInsertCityAction(reg, pro);
+            });
+        }else
+        {
+            $('#citta').children().remove();
+        }
+    });
+
+    function bindInsertProvAction(reg, pro)
+    {
+        let anchor = document.getElementById('insert-prov');
+        anchor.removeAttribute("hidden");
+
+        $('#insert-prov').on('click', function (e) {
+            e.preventDefault();
+
+            var _html = '<style>' +
+                'h5 {color: #1a1a1a}' +
+                '</style>' +
+                '<h5>Hai selezionato <strong>' + reg + '</strong> come regione, assicurati che sia giusta!</h5>' +
+                '<br>' +
+                '<h5>Non è corretta? Chiudi questa schermata per modificarla</h5>' +
+                '<h5>Altrimenti inserisci la tua provincia!</h5>';
+
+            swal({
+                title: "Ops! Non è presente la tua provincia?",
+                html: _html,
+                type: "question",
+                showCancelButton: true,
+                focusConfirm: false,
+                confirmButtonText:
+                    '<i class="fas fa-check"></i> Inserisci!',
+                cancelButtonText:
+                    '<i class="fa fa-close"> Chiudi!</i>'
+            }).then(function(result){
+                if(result.value)
+                {
+                    swal({
+                        title: 'Inserisci la tua provincia',
+                        type: "warning",
+                        showCancelButton: true,
+                        confirmButtonText:
+                            '<i class="fas fa-check"></i> Inserisci!',
+                        input: 'text',
+                        inputPlaceholder: 'Inserisci la tua provincia',
+                        cancelButtonText:
+                            '<i class="fa fa-close"> Chiudi!</i>',
+                        inputValidator: async (text) => {
+                            if (!text) {
+                                return 'Sei sicuro di aver inserito la provincia?'
+                            }
+                            else
+                            {
+                                if (text.match('[0-9]+')) return 'Nome della provincia non valido!';
+
+                                $('#provincia').append('<option value="'+text+'" selected>'+text+'</option>');
+
+                                await swal({
+                                    title: "Provincia inserita con successo!",
+                                    html: '<h4 style="color: #1a1a1a">Scusaci del disagio</h4>',
+                                    type: "success",
+                                    confirmButtonText: 'Ok!'
+                                });
+
+                                $('#citta').append('<option value="'+-1+'">'+ 'Seleziona Città' +'</option>');
+                                let anchor = document.getElementById('insert-city');
+                                anchor.removeAttribute("hidden");
+                                bindInsertCityAction(reg, pro);
+                            }
+                        }
+                    });
+                }
+            });
+            return false;
+        });
+    }
+
+    function bindInsertCityAction(reg, pro)
+    {
+       $('#insert-city').on('click', function (e) {
+            e.preventDefault();
+
+            var _html = '<style>' +
+                'h5 {color: #1a1a1a}' +
+                '</style>' +
+                '<h5>Hai selezionato <strong>' + reg + '</strong> come regione e <strong>' + pro + '</strong> come provincia' +
+                ', assicurati che siano giusti!</h5>' +
+                '<br>' +
+                '<h5>Non sono corretti? Chiudi questa schermata per modificarli</h5>' +
+                '<h5>Altrimenti inserisci il tuo comune!</h5>';
+
+            swal({
+                title: "Ops! Non è presente il tuo comune?",
+                html: _html,
+                type: "question",
+                showCancelButton: true,
+                focusConfirm: false,
+                confirmButtonText:
+                    '<i class="fas fa-check"></i> Inserisci!',
+                cancelButtonText:
+                    '<i class="fa fa-close"> Chiudi!</i>'
+            }).then(function(result){
+                if(result.value)
+                {
+                    swal({
+                        title: 'Inserisci il tuo comune!',
+                        type: "warning",
+                        showCancelButton: true,
+                        input: 'text',
+                        inputPlaceholder: 'Inserisci il tuo comune',
+                        cancelButtonText:
+                            '<i class="fa fa-close"> Chiudi!</i>',
+                        confirmButtonText:
+                            '<i class="fas fa-check"></i> Inserisci!',
+                        inputValidator: async (text) => {
+                            if (!text) {
+                                return 'Sei sicuro di aver inserito il comune?';
+                            }
+                            else
+                            {
+                                if (text.match('[0-9]+')) return 'Nome del comune non valido!';
+
+                                $('#citta').append('<option value="'+text+'" selected>'+text+'</option>');
+
+                                await swal({
+                                    title: "Comune inserito con successo!",
+                                    html: '<h4 style="color: #1a1a1a">Scusaci del disagio</h4>',
+                                    type: "success",
+                                    confirmButtonText: 'Ok!'
+                                });
+                            }
+                        }
+                    });
+                }
+            });
+            return false;
+        });
+    }
+
+
+    $('#salva').on('click', function (){
+        var can_insert = true;
+
+        var reg = $('#regione').val();
+        var pro = $('#provincia').val();
+        var cit = $('#citta').val();
+
+        var via = $('#address').val();
+        var num = $('#number_address').val();
+        var cap = $('#postal_code').val();
+        var tel = $('#phone_number').val();
+        var iva = $('#company').val();
+
+
+        if ( reg == -1 || pro == -1 || cit == -1 )
+        {
+            $('#error').text('Regione e/o provincia e/o città mancanti !');
+            $("#error").effect("shake");
+            can_insert = false;
+        }
+
+        if (!/^\d+$/.test(cap) || cap.length !== 5)
+        {
+            $('#error').text('CAP non valido !');
+            $("#error").effect("shake");
+            can_insert = false;
+        }
+
+        if (!/^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/.test(tel))
+        {
+            $('#error').text('Numero di telefono non valido !');
+            $("#error").effect("shake");
+            can_insert = false;
+        }
+
+        if (iva !== '' && (!/^\d+$/.test(iva) || iva.length !== 11))
+        {
+            $('#error').text('Numero di partita iva non valido !');
+            $("#error").effect("shake");
+            can_insert = false;
+        }
+
+        if (can_insert)
+        {
+            $('#error').text('');
+
+            var code = -1;
+
+            if (window.location.href.split('?').length > 1 )
+            {
+                code = parseInt(window.location.href.split('?')[1].split('=')[1]);
+            }
+
+            $.ajax({
+                url: 'include/address-insert_ajax.php',
+                type: 'POST',
+                data: {
+                    _code: isNaN(code) ? '' : code,
+                    province: pro,
+                    city: cit,
+                    address: via,
+                    number_address: num,
+                    postal_code: cap,
+                    phone_number: tel,
+                    region: reg,
+                    company: iva === '' ? null : iva
+                }
+            }).done(function (data) {
+                console.log(data);
+                swal({
+                    title: "Wow!",
+                    text: "Indirizzo inserito con successo !",
+                    type: "success"
+                }).then(function() {
+                    var loc = '';
+
+                    window.location.href.split('?').forEach(function(item){
+                        if (item.match('location')) loc = item.split('=')[1];
+                    })
+
+                    if (loc !== '')
+                        window.location = loc;
+                    else
+                        window.location = 'profile.php';
+                });
+            });
+        }
+    });
+
+
+
+</script>
+
+

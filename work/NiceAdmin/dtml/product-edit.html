@@ -1,0 +1,263 @@
+
+<style>
+    .error{
+      color: red;
+    }
+    div.hidden_notification {
+          display: none;
+      }
+  </style>
+  
+  
+  <main id="main" class="main">
+      <div class="pagetitle">
+        <[message::notify library="utility"]>
+        <h1>Modifica un prodotto</h1>
+        <nav>
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="dashboard.php">Dasboard</a></li>
+            <li class="breadcrumb-item">Modifica prodotto</li>
+          </ol>
+        </nav>
+      </div><!-- End Page Title -->
+  
+  
+  <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Dettagli prodotto:</h5>
+  
+        <!-- Floating Labels Form -->
+        <form class="row g-3" action="product-edit.php" method="post" id="form" enctype="multipart/form-data">
+          <div class="col-md-12">
+            <p class="error" id="error"><[errorNome]></p>
+            <div class="form-floating">
+              <input type="text" class="form-control" name="nomeprod" id="nomeprod" placeholder="Nome prodotto" value="<[nome]>">
+              <label for="nomeprod">Nome prodotto</label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <p class="error" id="error"><[errorPrezzo]></p>
+              <div class="input-group mb-3">
+                  <span class="input-group-text">€</span>
+                  <input type="text" class="form-control" name="prezzo" id="prezzo"  value="<[prezzo]>">
+                </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-floating">
+            </div>
+          </div>
+          <div class="col-12">
+            <p class="error" id="error"><[errorDescrizione]></p>
+            <div class="form-floating">
+              <textarea class="form-control" placeholder="Descrizione" name="descrizione" id="descrizione" style="height: 100px;"><[descrizione]></textarea>
+              <label for="floatingTextarea">Descrizione</label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <p class="error" id="error"><[errorCategoria]></p>
+            <div class="form-floating mb-3">
+              <select class="form-select" name="categoria" id="categoria" aria-label="Categoria">
+                <[foreach]>
+                <option value="<[idcat]>" <[selected]>><[nomecat]></option>
+                <[/foreach]>
+              </select>
+              <label for="floatingSelect">Categoria</label>
+          </div>
+          <div class="col-md-4">
+            <p class="error" id="error"><[errorQuantita]></p>
+            <div class="form-floating">
+              <input type="number" min="1" value="1" class="form-control" name="quantita" id="quantita" placeholder="Quantità" value="<[quantita]>">
+              <label for="quantitia">Quantità</label>
+            </div>
+          </div>
+          </div>
+          <div class="col-md-6">
+          <!-- immgaine del prodotto -->
+            <div class="card">
+              <img src="<[imgPath]>" alt="" class="card-img-top" style="border-radius: 15px;">
+            </div>
+          </div>
+
+  <!-- dynamic  --> <!--TODO MODIFICA PER ESSERE IN LINEA COL TEMPLATE ENGINE-->
+          <h5 class="card-title">Modifica e aggiungi specifiche</h5>
+          <div class="row" id="dynamic_row">
+            <div class="row" id="dynamic_row">
+            <div class="col-md-4">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="nomespec" name="nomespec[]" placeholder="Nome Specifica">
+                <label for="nomespec">Nome della specifica</label>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="valorespec" name="valorespec[]" placeholder="Valore specifica">
+                <label for="valorespec">Valore della specifica</label>
+              </div>
+            </div>
+            <div class="col-md-2"><a href="javascript:void(0);" class="add_input_button" id="add_input_button"
+              title="Add field">
+                <!-- <img src="add-icon.png"/> --> <h2><i class="bi bi-plus-square"></i></h2>
+            </a></div><div><br></div></div>
+            
+          </div>
+          <[foreach]>
+            <[spec]>
+          <[/foreach]>
+  
+          <div class="col-12">
+            <h5 class="card-title">Modifica immagine</h5>
+            <p class="error" id="error"><[errorImg]></p>
+            <div class="form-floating">
+              <div class="col-md-12">
+                <input class="form-control" type="file" name="foto" id="foto">
+                <label for="foto">Se non selezioni nessuna immagine rimarrà quella di prima</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <h5 class="card-title">Modifica datasheet</h5>
+            <div class="form-floating">
+              <div class="col-md-12">
+                <input class="form-control" type="file" name="datasheet" id="datasheet">
+                <label for="datasheet">Se non selezioni nessun datasheet rimarrà quello di prima</label>
+              </div>
+            </div>
+          </div>
+  
+          
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary">Modifica</button>
+            <button class="btn btn-danger" name="delete" id="delete">Elimina</button>
+            <button type="button" class="btn btn-secondary" onclick="history.back();">Indietro</button>
+          </div>
+  
+          
+  
+        </form><!-- End floating Labels Form -->
+  
+      </div>
+    </div>
+    </main>
+  
+     <!-- Script per far shackerare la scritta -->
+     <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+     <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+     <script>
+  
+
+  var add_field = $('#add_input_button');
+      var field_wrapper = $('#dynamic_row');
+      var input_count = 1;
+      // add button dynamically
+      $('#add_input_button').click(function(){
+        input_count ++;
+        $(field_wrapper).append(' <div class="row" id="dynamic_row"><div class="col-md-4"><div class="form-floating"><input type="text" class="form-control" id="nomespec" name="nomespec[]" placeholder="Nome Specifica"><label for="nomespec">Nome della specifica</label></div></div><div class="col-md-4"><div class="form-floating"><input type="text" class="form-control" id="valorespec" name="valorespec[]" placeholder="Valore specifica"><label for="valorespec">Valore della specifica</label></div></div><div class="col-md-2"><a href="javascript:void(0);" class="remove_input_button" id="remove_input_button" title="Add field"><h2><i class="bi bi-dash-square"></i></h2></a></div><div><br></div></div>');
+      });
+      // remove dynamic input field
+
+      // qui uso document:
+      /*
+           if your page was dynamically creating elements with the class name 
+           dosomething you would bind the event to a parent which already exists
+            (this is the nub of the problem here, you need something that exists to bind to,
+             don't bind to the dynamic content), this can be (and the easiest option) is document. 
+             Though bear in mind document may not be the most efficient option.
+      */
+      $(document).on('click', '#remove_input_button', function(e){
+        e.preventDefault();
+        $(this).parent().parent('div').remove();
+      });
+          $('#prezzo').keypress(function(event) {
+            if ((event.which != 46 || $(this).val().indexOf('.') != -1) &&
+              ((event.which < 48 || event.which > 57) &&
+                (event.which != 0 && event.which != 8))) {
+              event.preventDefault();
+            }
+            var text = $(this).val();
+              if ((text.indexOf('.') != -1) &&
+                (text.substring(text.indexOf('.')).length > 2) &&
+                (event.which != 0 && event.which != 8) &&
+                ($(this)[0].selectionStart >= text.length - 2)) {
+                event.preventDefault();
+              }
+          });
+
+
+
+  $().ready(function(){
+
+
+         
+
+          $("#delete").on('click', function(event) {
+            event.preventDefault();
+            Swal.fire({
+                title: 'Sei sicuro di voler eliminare il prodotto?',
+                text: "Non puoi recuperarlo se lo fai!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, eliminalo!',
+                cancelButtonText: "Annulla"
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  $.ajax({
+                    url: 'product-edit.php',
+                    type: 'POST',
+                    data: {elimina: "elimina"},
+                    success: function(result){
+                      console.log(result);
+                        if(result == 1){
+                          Swal.fire({
+                            title: 'Eliminato!',
+                            text: 'Il prodotto è stato eliminato.',
+                            confirmButtonText: 'Ok!',
+                            confirmButtonColor: '#3085d6'
+                        }).then(function (){
+                            window.location = "dashboard.php";
+                          });
+                        }
+                    }
+                  });
+                }
+          });
+          $('form.notify').hover(function(){
+              $('div.alert').fadeOut();
+          })});
+
+           // dynamic input field
+             //error detection client side. non è molto elegante ma funziona!
+             let id = (id) => document.getElementById(id);
+             let classes = (classes) => document.getElementsByClassName(classes);
+             let nome = id("nomeprod"),
+                 prezzo = id("prezzo"),
+                 descrizione = id("descrizione"),
+                 categoria = id("categoria"),
+                 quantita = id("quantita"),
+                 form = id("form"),
+                 errorMsg = classes("error");
+             let pass = true; 
+              
+              form.addEventListener("submit", (e) =>{
+                engine(nome, 0, "Inserisci il nome del prodotto");
+                engine(prezzo, 1, "Inserisci il prezzo del prodotto");
+                engine(descrizione, 2, "Inserisci descrizione del prodotto");
+                engine(categoria, 3, "Inserisci categoria del prodotto");
+                engine(quantita, 4, "Inserisci quantità del prodotto");
+                if(pass==false){ e.preventDefault(); pass = true;}
+              });
+  
+              let engine = (id, serial, message) => {
+                if (id.value.trim() === ""){
+                  errorMsg[serial].innerHTML = message;
+                  id.style.border = "2px solid red";
+                  pass = false;
+                }else{
+                  errorMsg[serial].innerHTML = "";
+                }
+              }
+            });
+     </script>

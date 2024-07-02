@@ -1,0 +1,103 @@
+
+<style>
+    .solotesto {
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    color: blue;
+}
+</style>
+
+<section class="section">
+    <div class="row">
+    <div class="col-lg-12">
+       
+            <table class="table table-borderless table-hover" id="offers">
+            <thead>
+                <tr>
+               
+                <th scope="col">Id</th>
+                <th scope="col">Valore</th>
+                <th scope="col">Scadenza</th>
+                <th scope="col">Azioni</th>
+                </tr>
+            </thead>
+            <tbody>
+                <[foreach]>
+                    <tr>
+                       
+                        <td><[id]></td>
+                        <td><[percentuale]></td>
+                        <td><[scadenza]></td>
+                        <td><button type="button" class="solotesto" id="modifica_offerta" >
+                            Modifica
+                          </button>/<button type="button" class="solotesto" onclick="window.location.href='include/offer.inc.php?rimuovi=<[id]>'">
+                            Rimuovi
+                          </button></td>
+                    </tr>
+                <[/foreach]>
+            </tbody>
+            </table>
+        
+    </div>
+    </div>
+</section>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    // se metto il codice qui prima del caricamento del documento allora jquery funziona su tutte le pagine della table  
+    $('#offers tr').css({
+          cursor : 'pointer'
+      });
+$().ready(function(){		
+     dataTable4 = new simpleDatatables.DataTable("#offers", {
+	    searchable: true,
+	    fixedHeight: false,
+        perPage: 5,
+        layout: {
+            top: "{search}",
+            bottom: "{info}{pager}"
+        }
+       
+    });
+    $('#offers').on('click', 'tbody > tr' ,function(event){    //con tbody > tr rendo cliccabile solo il corpo della tabella non la testa
+        
+
+        $('tbody tr').not(this).removeClass('highlight');
+        $(this).toggleClass('highlight');
+           
+
+        var key = $(this).children().first().text();
+        
+        $.ajax({
+            type: "POST",
+            url: 'include/offer.inc.php',
+            data: {id : key},
+            success: function(data){
+                $("#prodotti_offerta tbody").empty();
+                var trHTML = '';
+                $.each(data, function (i, item) {
+                trHTML += "<tr><td>" + item.id + "</td><td>" + item.nome + "</td><td>" + item.prezzo + "</td><td>" + item.nomeC +
+                     "</td><td> <button type='button' class='solotesto' onclick=window.location.href='include/offer.inc.php?rimuoviProdotto="+item.id+"'>Rimuovi</button></tr>";
+                });
+                $('#prodotti_offerta tbody').append(trHTML);
+            },
+            dataType:"json"
+        });
+  
+    });
+
+    $('#offers').on('click', 'tbody > tr #modifica_offerta', function(e) {
+        e.stopPropagation();
+        var id = $(this).closest('tr').find('td:eq(0)').html(); 
+        var valore = $(this).closest('tr').find('td:eq(1)').html();
+        var data = $(this).closest('tr').find('td:eq(2)').html();
+        $('#idPromo').val(id);  
+        $('#percentualeModifica').val(valore);
+        $('#inputDateModifica').val(data);
+        $('#verticalycentered').modal('show');
+    });
+
+});
+</script>

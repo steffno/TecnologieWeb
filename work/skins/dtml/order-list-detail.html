@@ -1,0 +1,110 @@
+<section class="cat_product_area section_padding">
+    <div class="container">
+        <div class="row banner_part rounded-lg x100xauto padding_bottom_25 text-center d-flex align-items-center justify-content-center">
+            <div class="col-lg-1">
+                <a href="order.php">
+                    <div class="button-default button-slanted" title="Torna agli ordini">
+                        <i class="button-slanted-content fas fa-arrow-left"></i>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-11">
+                <h3 class="white-text">Il tuo ordine</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="left_sidebar_area">
+                    <aside class="left_widgets p_filter_widgets">
+                        <ul id="cattable" class="list">
+                            <div class="border" style="border-color: black; border-radius: 15px; padding: 5%;">
+                                <h5 class="card-title text-center">Informazioni utente</h5>
+                                <div class="order-detail-div">
+                                    <b>Nome:</b>
+                                    <div class="order-detail-text-div"><span><[nome]> <[cognome]></span></div>
+                                </div>
+                                <div class="order-detail-div">
+                                    <b>Indirizzo: </b>
+                                    <div class="order-detail-text-div">
+                                        <span><[via]>, <[numero]>, <[provincia]>, <[citta]> (<[cap]>), <[regione]></span>
+                                    </div>
+                                </div>
+                                <div class="order-detail-div">
+                                    <b>Numero: </b>
+                                    <div class="order-detail-text-div">
+                                        <span><[telefono]></span>
+                                    </div>
+                                </div>
+                                <div class="order-detail-div">
+                                    <b>Email: </b>
+                                    <div class="order-detail-text-div">
+                                        <span><[email]></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="border space-between-y-axis"
+                                 style="border-color: black; border-radius: 15px; padding: 5%;">
+                                <h5 class="card-title text-center">Informazioni ordine</h5>
+                                <div class="order-detail-div">
+                                    <b>Stato: </b>
+                                    <div class="order-detail-text-div">
+                                        <span><[stato]></span>
+                                    </div>
+                                </div>
+                                <div class="order-detail-div">
+                                    <b>Data prevista di consegna: </b>
+                                    <div class="order-detail-text-div">
+                                        <span><[data]></span>
+                                    </div>
+                                </div>
+                                <div class="order-detail-div">
+                                    <b>Codice ordine: </b>
+                                    <div class="order-detail-text-div">
+                                        <span><[codice]></span>
+                                    </div>
+                                </div>
+                                <div class="order-detail-div">
+                                    <b>Costo totale dell'ordine: </b>
+                                    <div class="order-detail-text-div">
+                                        <span><[totale]> €</span>
+                                    </div>
+                                </div>
+                                <div class="order-detail-div">
+                                    <b>Metodo di spedizione: </b>
+                                    <div class="order-detail-text-div">
+                                        <span><[azienda]> <[tipologia]>, <[costo]>€</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </ul>
+                    </aside>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="cart_inner ">
+                    <div id="product_frame" class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th scope="col">Nome</th>
+                                <th scope="col">Codice</th>
+                                <th scope="col">Prezzo</th>
+                                <th scope="col">Quantità</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <[foreach]>
+                            <[order_item]>
+                            <[/foreach]>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script src="//code.jquery.com/jquery-1.12.4.js"></script>
+<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>

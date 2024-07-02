@@ -1,0 +1,41 @@
+<main id="main" class="main">
+
+  <div class="pagetitle">
+    <h1>Dashboard <[titolo]>
+    </h1> 
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="dashboard.php">Home</a></li>
+        <li class="breadcrumb-item active">Dashboard</li>
+      </ol>
+    </nav>
+  </div><!-- End Page Title -->
+    <section class="section dashboard">
+      <!-- ordini -->
+      <[orders::report library="utility" name="prodotto" table="ordine"
+        fields="ordine.id, ordine.stato, ordine.totale, ordine.codice, ordine.data, utente.username, indirizzo_spedizione.cap"
+        others="LEFT JOIN utente ON utente.id = ordine.id_utente LEFT JOIN indirizzo_spedizione on indirizzo_spedizione.id = ordine.id_spedizione"
+        ]>
+        <!-- Top Selling -->
+        <[hot]>
+          <!--SE LO FACCIO CON LA LIBRERIA UTILITY CONTINUA A CARICARE PER SEMPRE-->
+          <!-- End Top Selling -->
+
+      <div class="card">
+        <div class="card-body overflow-auto">
+          <h5 class="card-title">Prodotti</h5>
+          <[report::report library="utility" name="prodotto" table="prodotto"
+            fields="prodotto.id as idP, prodotto.nome, prodotto.prezzo, prodotto.img, categoria.nome as nomeC, offerta.percentuale, offerta.scadenza, prodotto_offerta.prezzo AS sconto"
+            others="LEFT JOIN categoria ON categoria.id = prodotto.id_categoria LEFT JOIN prodotto_offerta ON prodotto_offerta.id_prodotto = prodotto.id
+            LEFT JOIN offerta ON prodotto_offerta.id_offerta = offerta.id" ]>
+        </div>
+      </div>  
+    </section>
+</main>
+<script>
+    $('#report tbody tr ').each(function(){
+  		 $('#report tbody tr td:nth-child(1)').hide();
+       $('#report th:nth-child(1)').hide();
+       });
+
+</script>

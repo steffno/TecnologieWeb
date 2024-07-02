@@ -1,0 +1,45 @@
+<section class="cart_area padding_top padding_bottom_100">
+    <div class="container">
+        <div class="x100xauto banner_part rounded text-center padding_bottom_25 d-flex align-items-center justify-content-center">
+            <h3 class="white-text">I tuoi ordini</h3>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="cart_inner">
+                    <div class="table-responsive">
+                        <table class="table table-responsive-lg table-hover" id="table_order">
+                            <thead>
+                            <tr>
+                                <th scope="col">Codice</th>
+                                <th scope="col">Data</th>
+                                <th scope="col">Totale</th>
+                                <th scope="col">Stato</th>
+                                <th scope="col">Indirizzo</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                <[foreach]>
+                                    <[order_item]>
+                                <[/foreach]>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="//code.jquery.com/jquery-1.12.4.js"></script>
+<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    $('.item-block').css('cursor', 'pointer');
+    
+
+$().ready(function(){
+    $('#table_order').on('click', 'tbody > tr' ,function(event){    //con tbody > tr rendo cliccabile solo il corpo della tabella non la testa
+        var key = $(this).find('#item-code').text();
+        window.location = 'order-detail.php?key='+key;
+});
+});
+</script>

@@ -1,0 +1,37 @@
+<!-- banner part start-->
+
+<section class="banner_part">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-12">
+                <div class="banner_slider owl-carousel">
+                    <[foreach]>
+                    <div class="single_banner_slider">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="banner_text">
+                                    <div class="banner_text_iner">
+                                        <h2 style="color: #fafafa" class="padding_left_10"><[NOMEPROD]></h2>
+                                        <div class="col-md-12 form-group">
+                                            <div class="creat_account d-flex align-items-center">
+                                            </div>
+                                            <a href="single-product_shop.php?code=<[CODE]>">
+                                                <div class="padding_top_20 button-default button-slanted">
+                                                    <span class="button-slanted-content">Compralo</span>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="align-self: center" class="banner_img d-none d-lg-block col-lg-8">
+                                <img  src="<[IMGPROD]>" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <[/foreach]>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

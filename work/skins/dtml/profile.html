@@ -1,0 +1,114 @@
+<!-- Inizio centro-->
+<section class="section_padding">
+    <div class="container">
+        <div class="x100xauto banner_part rounded text-center padding_bottom_25 d-flex align-items-center justify-content-center">
+            <h3 class="white-text">Il tuo profilo</h3>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="card mb-4">
+                    <div class="card-body text-center">
+                        <img src="skins/img/profile_pic.png" alt="avatar"
+                             class="rounded-circle img-fluid" style="width: 200px; height: 200px;">
+                        <h5 class="my-3"><[user_name]></h5>
+                        <p class="text-muted mb-1"><[username]></p>
+                        <div class="padding_top_50 p-3 mb-4">
+                            <div class="text-center">
+                                <button id="logout-btn" class="btn_3">Logout</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Nome e cognome</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0"><[user_name]>
+                                </p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <p class="mb-0">Email</p>
+                            </div>
+                            <div class="col-sm-9">
+                                <p class="text-muted mb-0"><[email]></p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="row">
+                            <[foreach]>
+                                <[addr_item]>
+                            <[/foreach]>
+                        </div>
+                        <div class="">
+                            <div class="text-left">
+                                <a style="color: white" id="add-addr" class="btn_3">Aggiungi indirizzo</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="//code.jquery.com/jquery-1.12.4.js"></script>
+<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script>
+    $(document).ready(function ()
+    {
+        $('#add-addr').css('cursor', 'pointer');
+    });
+
+    $('#logout-btn').on('click', function ()
+    {
+        $.ajax({
+            url: 'logout.php',
+            type: 'POST',
+            data: {
+                evt: 'logout'
+            }
+        }).done(function (response)
+        {
+            if (response === '200')
+            {
+                const lio = window.location.href.lastIndexOf('/');
+                window.location.href = window.location.href.substring(0, lio+1) + 'index.php';
+            }
+        });
+    });
+
+    $('#add-addr').on('click', function (){
+        window.location = 'address-setup.php';
+    });
+
+
+    function remove(code)
+    {
+        $.ajax({
+            url: 'include/address-insert_ajax.php',
+            type: 'POST',
+            data: {
+                _code: code,
+                _del: true
+            }
+        }).done(function () {
+            swal({
+                title: "Attenzione!",
+                text: "Indirizzo rimosso con successo !",
+                type: "warning"
+            }).then(function() {
+                window.location = 'profile.php';
+            });
+        });
+    }
+
+</script>

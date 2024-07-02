@@ -1,0 +1,363 @@
+<style>
+  .error {
+    color: red;
+  }
+
+  div.hidden_notification {
+    display: none;
+  }
+
+  .highlight {
+    background-color: #adb5bd;
+  }
+</style>
+
+
+<main id="main" class="main">
+  <div class="pagetitle">
+    <[message::notify library="utility" ]>
+      <h1>Gestisci offerte</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="dashboard.php">Dasboard</a></li>
+          <li class="breadcrumb-item">Gestisci offerte</li>
+        </ol>
+      </nav>
+  </div><!-- End Page Title -->
+
+  <div class="row">
+    <div class="col-lg-6">
+
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Crea un' offerta</h5>
+
+          <form class="row g-3" method="post" id="form">
+            <div class="input-group mb-3">
+              <input required inputmode="decimal" oninput="this.value = this.value.replace(/\D+/g, '')"
+                class="form-control" aria-label="Percentuale" maxlength="2" id="percentuale" name="percentuale"
+                placeholder="Valore">
+              <span class="input-group-text">%</span>
+            </div>
+            <div class="row mb-3">
+              <label for="inputDate" class="col-sm-3 col-form-label">Scadenza:</label>
+              <div class="col-sm-8">
+                <input required type="date" class="form-control" id="inputDate" name="inputDate">
+              </div>
+            </div>
+
+            <div class="card-body overflow-auto">
+              <!-- Prodotti senza offerta -->
+              <[report2::report library="utility" name="prodotto" table="prodotto"
+                fields="prodotto.id as idP, prodotto.nome, prodotto.prezzo, prodotto.img, categoria.nome as nomeC, offerta.percentuale"
+                others="LEFT JOIN categoria ON categoria.id = prodotto.id_categoria LEFT JOIN prodotto_offerta ON prodotto.id = prodotto_offerta.id_prodotto
+                      LEFT JOIN offerta ON offerta.id = prodotto_offerta.id_offerta
+                      WHERE offerta.percentuale IS NULL" ]>
+            </div>
+
+
+            <div class="text-center">
+              <button type="submit" class="btn btn-primary">Applica promozione</button>
+              <button type="reset" class="btn btn-secondary">Reset</button>
+            </div>
+          </form><!-- End floating Labels Form -->
+          <!-- card body -->
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6">
+
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Prodotti con offerta:</h5>
+          <form class="row g-3" method="post" id="form2">
+
+            <div class="card-body overflow-auto">
+              <!-- Prodotti con offerta -->
+              <[report::report library="utility" name="prodotto" table="prodotto"
+                fields="prodotto.id as idP, prodotto.nome, prodotto.prezzo, prodotto.img, categoria.nome as nomeC, offerta.percentuale, offerta.scadenza, prodotto_offerta.prezzo AS sconto"
+                others="LEFT JOIN categoria ON categoria.id = prodotto.id_categoria JOIN prodotto_offerta ON prodotto_offerta.id_prodotto = prodotto.id JOIN offerta ON prodotto_offerta.id_offerta = offerta.id"
+                ]>
+            </div>
+            <div class="text-center">
+              <button type="submit" class="btn btn-danger">Rimuovi prodotto da promozione</button>
+              <button type="reset" class="btn btn-secondary">Reset</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-6">
+
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Gestisci le offerte attive:</h5>
+
+          <!-- Prodotti con offerta -->
+          <[offers::report library="utility" name="prodotto" table="offerta" fields="id, percentuale, scadenza"
+            others=" "]>
+
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Prodotti nell'offerta premuta:</h5>
+          <div class="card-body overflow-auto">
+
+            <table id="prodotti_offerta" class="table">
+              <thead>
+                <tr>
+                  <th scope="col">Id</th>
+                  <th scope="col">Nome</th>
+                  <th scope="col">Prezzo</th>
+                  <th scope="col">Categoria</th>
+                  <th scope="col">Azioni</th>
+                </tr>
+              </thead>
+              <tbody>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="verticalycentered" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Modifica offerta</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form lass="row g-3" method="post" id="form3">
+            <div class="row mb-3">
+              <div class="col-md-6">
+                Id offerta:<input type="text" class="form-control" disabled="" value="" name="idPromo" id="idPromo">
+              </div>
+              <div class="col-md-6">
+                Nuovo valore:
+                <div class="input-group ">
+                  <input required inputmode="numeric" oninput="this.value = this.value.replace(/\D+/g, '')"
+                    class="form-control" aria-label="Percentuale" maxlength="2" id="percentualeModifica"
+                    name="percentualeModifica" placeholder="Valore">
+                  <span class="input-group-text">%</span>
+                </div>
+                <div class="errorperc" style="color: red;">
+                </div>
+
+              </div>
+            </div>
+            <div class="row mb-3">
+              <label for="inputDate" class="col-sm-3 col-form-label">Scadenza:</label>
+              <div class="col-sm-8">
+                <input required type="date" class="form-control" id="inputDateModifica" name="inputDateModifica">
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="card-body overflow-auto">
+                <[report3::report library="utility" name="prodotto" table="prodotto"
+                  fields="prodotto.id as idP, prodotto.nome, prodotto.prezzo, prodotto.img, categoria.nome as nomeC, offerta.percentuale"
+                  others="LEFT JOIN categoria ON categoria.id = prodotto.id_categoria LEFT JOIN prodotto_offerta ON prodotto.id = prodotto_offerta.id_prodotto
+                      LEFT JOIN offerta ON offerta.id = prodotto_offerta.id_offerta
+                      WHERE offerta.percentuale IS NULL" ]>
+              </div>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+              <button type="submit" class="btn btn-danger">Modifica la promozione</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div><!-- End Vertically centered Modal-->
+
+
+</main>
+
+<!-- Script per far shackerare la scritta -->
+<script src="//code.jquery.com/jquery-1.12.4.js"></script>
+<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+
+  $(document).ready(function () {
+
+    $('#promozioni').css({
+  "color": "#4154f1",
+  "background": "#f6f9ff"
+})
+$('#promozioni > .bi').css({
+  "color": "#4154f1",
+  "background": "#f6f9ff"
+})
+$('#dashboard').css({
+  "color": "#012970",
+  "background": "#fff"
+});
+
+$('#dashboard > i').css({
+  "color": "#012970",
+  "background": "#fff"
+});
+
+
+    let date = new Date();
+    date.setDate(date.getDate() + 1);
+    date = new Date(date);
+    date = date.toISOString().split("T")[0];
+    $('#inputDate').attr('min', date);
+    $('#inputDateModifica').attr('min', date);
+  })
+
+  $("#form").on('submit', function (e) {
+    var form = $(this);
+    var actionUrl = form.attr('action');
+
+    e.preventDefault(); // avoid to execute the actual submit of the form.
+    $.ajax({
+      type: "POST",
+      url: 'include/offer.inc.php',
+      dataType: "json",
+      data: form.serialize(), // serializes the form's elements.
+      success: function (data) {
+        if (data.result > 1) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Qualcosa è andato storto',
+            text: data + " prodotti non hanno ricevuto una promozione!"
+          });
+        } else {
+          Swal.fire({
+            icon: 'success',
+            title: 'Ottimo',
+            text: "Promozione creata!"
+          });
+
+          var perc = parseInt($('#percentuale').val());
+          var date = new Date($('#inputDate').val());
+          var day = date.getDate();
+          var month = (date.getMonth() + 1).toString();
+
+          if (month.length === 1) month = '0' + month;
+
+          var year = date.getFullYear();
+          var dataP = [year, month, day].join('-');
+
+          $('#report2 tr').filter(':has(:checkbox:checked)').each(function () {
+
+            var prezzo = parseFloat($(this).children().eq(3).text().replace("€", ""));
+
+            var sconto = prezzo / 100 * perc;
+            prezzo = prezzo - sconto;
+
+
+
+            prezzo = parseFloat(prezzo).toFixed(2).replace(".", ",");
+            if (prezzo.split(",")[1].length < 2) prezzo += "0";
+
+            var nuovaRiga = [$(this).children().eq(0).html(), $(this).children().eq(1).text(),
+              $(this).children().eq(2).text(), $(this).children().eq(3).text(),
+              $(this).children().eq(4).text(), perc + "%", "€" + prezzo, dataP];
+
+            dataTable.rows().add(nuovaRiga);
+            dataTable.columns().sort(2)
+            $(this).remove();
+
+          });
+
+          var bottoni =
+            "<button type='button' class='solotesto' id='modifica_offerta'>Modifica</button>/<button type='button' class='solotesto' onclick=window.location.href='include/offer.inc.php?rimuovi=" +
+            data.promozione[0] + "'>Rimuovi</button>"
+          nuovaRiga = [data.promozione[0], data.promozione[1], data.promozione[2], bottoni];
+          dataTable4.rows().add(nuovaRiga);
+          dataTable4.columns().sort(2)
+        }
+
+      }
+    });
+  });
+
+
+  $("#form2").on('submit', function (e) {
+
+    e.preventDefault(); // avoid to execute the actual submit of the form.
+
+
+    var form = $(this);
+    var actionUrl = form.attr('action');
+
+
+    $.ajax({
+      type: "POST",
+      url: 'include/offer.inc.php',
+      data: form.serialize(), // serializes the form's elements.
+      success: function (data) {
+
+        if (data == 0) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Qualcosa è andato storto',
+            text: data + " prodotti non sono stati rimossi dall'offerta!"
+          });
+        } else {
+          Swal.fire({
+            icon: 'success',
+            title: 'Ottimo',
+            text: data + "Promozioni rimossi dall'offerta!"
+          });
+
+          $('#report tr').filter(':has(:checkbox:checked)').each(function () {
+            var nuovaRiga = [$(this).children().eq(0).html(), $(this).children().eq(1).text(),
+              $(this).children().eq(2).text(), $(this).children().eq(3).text(),
+              $(this).children().eq(4).text()
+            ];
+            dataTable2.rows().add(nuovaRiga);
+            dataTable2  .columns().sort(2)
+            $(this).remove();
+          });
+        }
+
+      }
+    });
+
+  });
+
+  $("#form3").on('submit', function (e) {
+    var form = $(this);
+    var actionUrl = form.attr('action');
+    var disabled = form.find(':input:disabled').removeAttr('disabled');
+    e.preventDefault();
+    if ($('#percentualeModifica').val() === '0') {
+      $('.errorperc').html('Numeri maggiori di zero!');
+      $('#percentualeModifica').css('border', 'solid red');
+      return false;
+    } else {
+      $('.errorperc').html('');
+      $.ajax({
+        type: "POST",
+        url: 'include/offer.inc.php',
+        data: form.serialize(), // serializes the form's elements.
+        success: function () {
+          $('#verticalycentered').modal('hide');
+          window.location.href = window.location.href;
+        }
+      });
+    }
+
+    disabled.attr('disabled', 'disabled');
+  });
+</script>

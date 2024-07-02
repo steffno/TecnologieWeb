@@ -1,0 +1,87 @@
+<div class="card recent-sales overflow-auto">
+    <div class="card-body">
+        <h5 class="card-title">Ordini </h5>
+
+        <table class="table table-borderless datatable table-hover" id="orders">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col" id="stato">Stato</th>
+                <th scope="col">Totale</th>
+                <th scope="col">Codice</th>
+                <th scope="col">Data</th>
+                <th scope="col">Utente</th>
+                <th scope="col">CAP</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <[foreach]>
+            <tr title="Visualizza ordine">
+                <td><[id]></td>
+                <h3>
+                    <td id="stato"><[stato]></td>
+                </h3>
+                <td><[totale]></td>
+                <td><[codice]></td>
+                <td><[data]></td>
+                <td><[username]></td>
+                <td><[cap]></td>
+
+            </tr>
+            <[/foreach]>
+            </tbody>
+        </table>
+
+    </div>
+
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $("table #stato").each(function () {
+        switch ($(this).text()) {
+            case "in preparazione" :
+                $(this).addClass(" bg-info text-dark");
+                break;
+            case "preparato" :
+                $(this).addClass(" bg-warning text-dark");
+                break;
+            case "in transito" :
+                $(this).addClass(" bg-secondary text-dark");
+                break;
+            case "in cosnegna" :
+                $(this).addClass(" bg-primary text-dark");
+                break;
+            case "consegnato" :
+                $(this).addClass(" bg-succes text-dark");
+                break;
+        }
+    });
+
+    $('#orders tr').css({
+        cursor: 'pointer'
+    });
+
+    $().ready(function () {
+        $('#orders tbody tr ').each(function () {
+            var price = $(this).find("td:nth-child(3)").text();
+
+            priceOr = price;
+            // formatto il prezzo
+            price = parseFloat(price).toFixed(2).replace(".", ",");
+            if (price.split(",")[1].length < 2) price += "0";
+            $(this).find("td:nth-child(3)").text("€" + price);
+            // fine, grazie mastrogibbs
+        });
+        $('#orders').on('click', 'tbody > tr', function (event) {    //con tbody > tr rendo cliccabile solo il corpo della tabella non la testa
+
+            var key = $(this).children().first().text();
+            window.location = 'order-summary.php?key=' + key;
+
+        });
+    });
+
+
+</script>

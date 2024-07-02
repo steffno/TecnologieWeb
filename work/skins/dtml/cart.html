@@ -1,0 +1,565 @@
+<style>
+
+    .product_count-style {
+        display: inline-block;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .input-basic-style {
+        width: 100px;
+        height: 40px;
+        outline: none;
+        box-shadow: none;
+        border: 1px solid #eeeeee;
+        padding-left: 10px;
+        border: 1px solid #eeeeee;
+        border-radius: 3px;
+        padding-left: 10px;
+        border-radius: .9em;
+    }
+
+    .input-n-i {
+        position: absolute;
+        right: 0;
+        top: -7px;
+        padding: 7px;
+        border-left: 1px solid #dddddd;
+        display: inline-block;
+    }
+
+    input-n-i:after {
+        position: absolute;
+        content: "";
+        left: 0;
+        bottom: 7px;
+        width: 100%;
+        height: 1px;
+        background-color: #dddddd;
+    }
+
+    .input-n-d {
+        position: absolute;
+        right: 0;
+        bottom: -9px;
+        padding: 7px;
+        border-left: 1px solid #dddddd;
+        display: inline-block;
+    }
+</style>
+
+<!--================Cart Area =================-->
+<section class="cart_area padding_top padding_bottom_100">
+    <div class="container">
+        <div class="x100xauto banner_part rounded text-center padding_bottom_25 d-flex align-items-center justify-content-center">
+            <h3 class="white-text">Il tuo carrello</h3>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="cart_inner">
+                    <div class="table-responsive">
+                        <table id="product-table" class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col"></th>
+                                <th scope="col">Prodotto</th>
+                                <th scope="col">Codice</th>
+                                <th scope="col">Prezzo</th>
+                                <th scope="col">Quantità</th>
+                                <th scope="col">Totale</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <[foreach]>
+                            <[cart_item]>
+                            <[/foreach]>
+                            </tbody>
+                        </table>
+                        <table style="text-align:right" class="table table-active">
+                            <thead>
+                            <tr>
+                                <th style="font-weight: 600; color: #2f2f2f" scope="col">Prodotti totali</th>
+                                <th style="font-weight: 600; color: #2f2f2f" scope="col">Sub totale</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="item-block">
+                                <td>
+                                    <h5 class="total-item-count" id="total-item-count"></h5>
+                                </td>
+                                <td>
+                                    <h5 class="cart-cost" id="cart-cost"></h5>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div class="checkout_btn_inner float-right">
+                            <a class="btn_3" href="shop.php">Continua a comprare</a>
+                            <a class="btn_3 checkout_btn_3 padding_bottom_50" href="#proceded-to-order">Checkout</a>
+                        </div>
+                    </div>
+                </div>
+                <div id="proceded-to-order"></div>
+                <div style="margin-top: 100px" class="billing_details">
+                    <div class="order_box">
+                        <h2>Scegli l'indirizzo</h2>
+                        <div class="padding_top_10 padding_bottom_25">
+                            <a href="address-setup.php?location=cart.php">Non hai un indirizzo? Inseriscilo</a>
+                        </div>
+                        <section class="login_part padding_top_10">
+                            <div class="container">
+                                <div class="row align-items-center">
+                                    <div class="col-lg-6 col-md-6 disp-grid">
+                                        <div class="address-cart text-center banner_part rounded">
+                                            <div style="height: 100px" class="padding_bottom_50">
+                                                <div class="form-group p_star">
+                                                    <h4 class="white-text">Seleziona l'indirizzo di spedizione </h4><br>
+                                                    <select class="form-control" id="norm-addr"
+                                                            onchange="find_and_place()">
+                                                        <option value="-1">Seleziona</option>
+                                                        <[foreach]>
+                                                        <[addr]>
+                                                        <[/foreach]>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <ul class="flex-column white-cream-font-color">
+                                                <li>
+                                                    <span id="nomeaddr" class="white-cream-font-color"></span>
+                                                </li>
+                                                <li>
+                                                    <span id="viaaddr" class="white-cream-font-color"></span>
+                                                </li>
+                                                <li>
+                                                    <span id="otheradr" class="white-cream-font-color"></span>
+                                                </li>
+                                                <li>
+                                                    <span id="teliva" class="white-cream-font-color"></span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 disp-grid">
+                                        <div class="address-cart text-center banner_part rounded">
+                                            <div style="height: 100px" class="padding_bottom_50">
+                                                <h4 class="white-text">Seleziona l'ndirizzo di fatturazione </h4><br>
+                                                <div class="form-group p_star">
+                                                    <select class="form-control" id="norm-addr2"
+                                                            onchange="find_and_place2()">
+                                                        <option value="-1">Utilizza l'indirizzo di spedizione</option>
+                                                        <[foreach]>
+                                                        <[addr_iva]>
+                                                        <[/foreach]>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <ul class="flex-column white-cream-font-color">
+                                                <li>
+                                                    <span id="nomeaddr2" class="white-cream-font-color"></span>
+                                                </li>
+                                                <li>
+                                                    <span id="viaaddr2" class="white-cream-font-color"></span>
+                                                </li>
+                                                <li>
+                                                    <span id="otheradr2" class="white-cream-font-color"></span>
+                                                </li>
+                                                <li>
+                                                    <span id="teliva2" class="white-cream-font-color"></span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="order_box">
+                                <h2>Scegli la spedizione</h2>
+                            </div>
+                            <table id="ship-table" style="text-align:right; margin-top: -25px"
+                                   class="table table-active">
+                                <thead>
+                                <tr>
+                                    <th style="font-weight: 600; color: #2f2f2f" scope="col">Scegli</th>
+                                    <th style="font-weight: 600; color: #2f2f2f" scope="col">Azienda</th>
+                                    <th style="font-weight: 600; color: #2f2f2f" scope="col">Tipologia</th>
+                                    <th style="font-weight: 600; color: #2f2f2f" scope="col">Prezzo</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <[foreach]>
+                                <[ship-details]>
+                                <[/foreach]>
+                                </tbody>
+                            </table>
+                            <table style="text-align:right" class="table table-active">
+                                <thead>
+                                <tr>
+                                    <th style="font-weight: 600; color: #2f2f2f" scope="col">Totale</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr class="item-block">
+                                    <td>
+                                        <h5 class="cart-cost" id="cart-cost-total"></h5>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </section>
+                        <div id="emit-area" class="padding_top_10" style="text-align: right;">
+                            <div id="error-area" class="align-items-center text-right">
+                                <!-- JQUERY FILL -->
+                            </div>
+                            <a style="display: inline-block; text-align: right;" id="emit-order"
+                               class="btn_3 padding_bottom_25" href="javascript:emit_order()">Procedi su PayPal</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--================End Cart Area =================-->
+
+
+<script src="//code.jquery.com/jquery-1.12.4.js"></script>
+<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+
+    $(document).ready(function () {
+        var total_cost = 0.0;
+        var total_count = 0;
+        $('tbody').find('.total-item-cost').each(function () {
+            var tmp = $(this).text();
+            tmp = tmp.replace(',', '.');
+            total_cost += parseFloat(tmp);
+        });
+
+        $('tbody').find('.input-basic-style').each(function () {
+            total_count += parseInt($(this).val());
+        });
+
+        $('.cart-cost').text(total_cost.toFixed(2) + " €");
+        $('.total-item-count').text(total_count);
+    });
+
+    $('tbody').find('.input-n-i').each(function () {
+        $(this).on('click', function () {
+            var ival = parseInt($(this).siblings('.input-basic-style').val()) + 1;
+            if ($(this).siblings('input').attr('max') >= ival) {
+                $(this).siblings('input').val(ival);
+
+                var prz = (parseFloat($(this).parentsUntil('tr').siblings().find('.item-cost')
+                    .text().replace(',', '.')) * ival).toFixed(2).replace('.', ',');
+
+                $(this).parentsUntil('tr').siblings().find('.total-item-cost').text(prz + " €");
+
+                var prod_code = $(this).parentsUntil('tr').siblings().find('.item-code').text();
+
+                $.ajax({
+                    url: 'include/add-to-cart_ajax.php',
+                    type: 'POST',
+                    data: {
+                        _count: 1,
+                        _prod_code: prod_code
+                    },
+                    complete: function () {
+                    }
+                });
+            }
+
+            var total_cost = 0.0;
+            var total_count = 0;
+            $('tbody').find('.total-item-cost').each(function () {
+                var tmp = $(this).text();
+                tmp = tmp.replace(',', '.');
+                total_cost += parseFloat(tmp);
+            });
+
+            $('tbody').find('.input-basic-style').each(function () {
+                total_count += parseInt($(this).val());
+            });
+
+            $('#cart-cost-total').text((parseFloat((parseFloat($('#cart-cost-total').text().replace(',', '.')) -
+                    parseFloat($('#cart-cost').text().replace(',', '.'))).toFixed(2)) +
+                total_cost).toFixed(2) + " €");
+            $('#cart-cost').text(total_cost.toFixed(2) + " €");
+            $('.total-item-count').text(total_count);
+
+        });
+    });
+
+    $('tbody').find('.input-n-d').each(function () {
+        $(this).on('click', function () {
+            var ival = parseInt($(this).siblings('.input-basic-style').val()) - 1;
+            if (ival >= 0) {
+                $(this).siblings('input').val(ival);
+                var prz = (parseFloat($(this).parentsUntil('tr').siblings()
+                    .find('.item-cost').text().replace(',', '.')) * ival).toFixed(2).replace('.', ',');
+
+                $(this).parentsUntil('tr').siblings().find('.total-item-cost').text(prz + " €");
+
+                var prod_code = $(this).parentsUntil('tr').siblings().find('.item-code').text();
+
+                var curr_this = this;
+
+                $.ajax({
+                    url: 'include/add-to-cart_ajax.php',
+                    type: 'POST',
+                    data: {
+                        _count: -1,
+                        _prod_code: prod_code
+                    }
+                })
+                    .done(function (response) {
+                        if (response === "rimosso") {
+                            swal({
+                                title: "Attenzione!",
+                                text: "Prodotto rimosso dal carrello!",
+                                type: "warning"
+                            }).then(function () {
+                                $(curr_this).parents('tr').remove()
+                            });
+                        }
+                    });
+            }
+            var total_cost = 0.0;
+            var total_count = 0;
+            $('tbody').find('.total-item-cost').each(function () {
+                var tmp = $(this).text();
+                tmp = tmp.replace(',', '.');
+                total_cost += parseFloat(tmp);
+            });
+
+            $('tbody').find('.input-basic-style').each(function () {
+                total_count += parseInt($(this).val());
+            });
+
+            $('#cart-cost-total').text((parseFloat((parseFloat($('#cart-cost-total').text().replace(',', '.'))
+                    - parseFloat($('#cart-cost').text().replace(',', '.'))).toFixed(2)) +
+                total_cost).toFixed(2) + " €");
+            $('#cart-cost').text(total_cost.toFixed(2) + " €");
+            $('.total-item-count').text(total_count);
+        });
+    });
+
+    function selectOnlyThis(id) {
+        var checkb = document.getElementsByName('checkb');
+        Array.prototype.forEach.call(checkb, function (el) {
+            el.checked = false;
+        });
+        id.checked = true;
+
+        var cost = parseFloat($(id).parents('tr').find('#ship-cost').text().replace(',', '.'));
+
+        var cat_cost = (parseFloat($('#cart-cost').text().replace(',', '.')) + cost).toFixed(2);
+
+        $('#cart-cost-total').text(cat_cost.toString().replace('.', ',') + " €");
+    }
+
+    function find_and_place() {
+        var cmd = document.getElementById('norm-addr').value;
+        var cmd2 = document.getElementById('norm-addr2').value;
+
+        var _data = "";
+
+        if (cmd !== '-1') {
+            $.ajax({
+                url: 'include/find-addr_ajax.php',
+                type: 'POST',
+                data: {
+                    _count: cmd
+                }
+            }).done(function (response) {
+                _data = JSON.parse(response);
+
+                $('#nomeaddr').text(_data['nom']);
+                $('#viaaddr').text(_data['via']);
+                $('#otheradr').text(_data['oth']);
+                $('#teliva').text(_data['tiv']);
+
+                if (cmd2 === '-1') {
+                    $('#nomeaddr2').text(_data['nom']);
+                    $('#viaaddr2').text(_data['via']);
+                    $('#otheradr2').text(_data['oth']);
+                    $('#teliva2').text(_data['tiv']);
+                }
+            });
+        } else {
+            $('#nomeaddr').text(_data);
+            $('#viaaddr').text(_data);
+            $('#otheradr').text(_data);
+            $('#teliva').text(_data);
+
+            if (cmd2 === '-1') {
+                $('#nomeaddr2').text(_data);
+                $('#viaaddr2').text(_data);
+                $('#otheradr2').text(_data);
+                $('#teliva2').text(_data);
+            }
+        }
+    }
+
+    function find_and_place2() {
+        var cmd = document.getElementById('norm-addr2').value;
+
+        var _data = "";
+
+        if (cmd !== '-1') {
+            $.ajax({
+                url: 'include/find-addr_ajax.php',
+                type: 'POST',
+                data: {
+                    _count: cmd,
+                    _iva: 'iva'
+                }
+            }).done(function (response) {
+                _data = JSON.parse(response);
+
+                $('#nomeaddr2').text(_data['nom']);
+                $('#viaaddr2').text(_data['via']);
+                $('#otheradr2').text(_data['oth']);
+                $('#teliva2').text(_data['tiv']);
+
+            });
+        } else {
+            $('#nomeaddr2').text($('#nomeaddr').text());
+            $('#viaaddr2').text($('#viaaddr').text());
+            $('#otheradr2').text($('#otheradr').text());
+            $('#teliva2').text($('#teliva').text());
+
+        }
+
+    }
+
+    function emit_order() {
+        var productNo = $("#product-table > tbody tr").length;
+        var normAddr = $('#norm-addr').val();
+        var norAddr2 = $('#norm-addr2').val();
+        var b = false;
+        var code;
+
+        if (productNo == 0) {
+            $('#error0').remove();
+            $('#error-area').prepend('<h5 id="error0" style="color: #fa5656; width: inherit">Non ci sono prodotti nel carrello </h5>');
+        } else {
+            $('#error0').remove();
+        }
+
+        if (normAddr == -1) {
+            $('#error1').remove();
+            $('#error-area').prepend('<h5 id="error1" style="color: #fa5656; width: inherit">Scegliere l\'indirizzo di spedizione </h5>');
+        } else {
+            $('#error1').remove();
+        }
+
+        $('#ship-table').find('.checkb').each(function () {
+            if ($(this).prop('checked')) {
+                b = true;
+                code = $(this).siblings().first().text();
+            }
+        });
+
+        if (!b) {
+            $('#error2').remove();
+            $('#error-area').prepend('<h5 id="error2" style="color: #fa5656; width: inherit">Scegliere la tipologia della spedizione</h5>');
+        } else {
+            $('#error2').remove();
+        }
+
+        if (b && normAddr != -1 && productNo != 0) {
+            var tot = $('#cart-cost-total').text();
+            tot = parseFloat(tot.replace(',', '.'));
+
+            $.ajax({
+                url: 'include/emit-order_ajax.php',
+                type: 'POST',
+                data: {
+                    _tot: tot,
+                    _code: code,
+                    _normAddr: normAddr
+                }
+            }).done(function (response) {
+                if (response == '') {
+                    swal({
+                        title: "Wow!",
+                        text: "Ordine creato con successo !",
+                        type: "success"
+                    }).then(function () {
+                        window.location = "order.php";
+                    });
+                } else {
+                    var prod = JSON.parse(response);
+
+                    var msg = '<h4>Attenzione, i seguenti prodotti:</h4>';
+
+                    for (var key in prod) {
+                        var value = prod[key];
+                        msg += '<span>- <b>' +key+ ' </b>(disponibilità ' +value+ ')<br>';
+                    }
+
+                    swal({
+                        title: "Attenzione!",
+                        html: msg + ' <h4> superano le tue richieste!</h4>',
+                        type: "error"
+                    }).then(function () {
+                        window.location = "cart.php";
+                    });
+                }
+            });
+
+        }
+
+    }
+
+    $('tbody').find('.btn_3_basic').each(function () {
+        $(this).on('click', function () {
+
+            var prod_code = $(this).parentsUntil('tr').siblings().find('.item-code').text();
+
+            var curr_this = this;
+
+            $.ajax({
+                url: 'include/add-to-cart_ajax.php',
+                type: 'POST',
+                data: {
+                    _delete: true,
+                    _code: prod_code
+                }
+            }).done(function (response) {
+                if (response === "rimosso") {
+                    swal({
+                        title: "Attenzione!",
+                        text: "Prodotto rimosso dal carrello!",
+                        type: "warning"
+                    }).then(function () {
+                        $(curr_this).parents('tr').remove();
+
+                        var total_cost = 0.0;
+                        var total_count = 0;
+                        $('tbody').find('.total-item-cost').each(function () {
+                            var tmp = $(this).text();
+                            tmp = tmp.replace(',', '.');
+                            total_cost += parseFloat(tmp);
+                        });
+
+                        $('tbody').find('.input-basic-style').each(function () {
+                            total_count += parseInt($(this).val());
+                        });
+
+                        $('#cart-cost-total').text((parseFloat((parseFloat($('#cart-cost-total').text().replace(',', '.'))
+                                - parseFloat($('#cart-cost').text().replace(',', '.'))).toFixed(2)) +
+                            total_cost).toFixed(2) + " €");
+                        $('#cart-cost').text(total_cost.toFixed(2) + " €");
+                        $('.total-item-count').text(total_count);
+
+                    });
+                }
+            });
+
+
+        });
+    });
+
+
+</script>

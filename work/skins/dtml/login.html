@@ -1,0 +1,117 @@
+
+
+<!--================login_part Area =================-->
+    <section class="login_part padding_top padding_bottom_100">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 col-md-6">
+                    <div class="login_part_text text-center">
+                        <div class="login_part_text_iner">
+                            <h2>Nuovo nello shop?</h2>
+                            <h4 class="white-text">Registrati per non perdere offerte su tantissimi
+                             prodotti di elettronica</h4>
+                            <a href="register.php">
+                                <div class="button-default button-slanted padding_top_10">
+                                    <span class="button-slanted-content">Crea un account</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="login_part_form">
+                        <div class="login_part_form_iner">
+                            <h3>Ben tornato!</h3>
+                            <style>
+                                .error{
+                                    color: red;
+                                }
+                            </style>
+                            <div><p class="error" id="error"> <[error]> </p></div>
+                            <form class="row contact_form" action="login.php" method="post" novalidate="novalidate">
+                                <div class="col-md-12 form-group p_star">
+                                    <div class="form-floating2">
+                                        <input type="text" class="form-control" id="name" name="name" value=""
+                                            placeholder="Username" required>
+                                        <label for="name">Username</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 form-group p_star">
+                                    <div class="form-floating2">
+                                        <input type="password" class="form-control" id="password" name="password" value=""
+                                               placeholder="Password" required minlength="6">
+                                        <label for="name">Password</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <button type="submit" value="submit" class="btn_3">
+                                        log in
+                                    </button>
+                                    <a class="lost_pass" href="javascript:emitSwal()">Password dimenticata?</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Script per far shackerare la scritta -->
+    <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+            var errore = document.getElementById('error');
+            if (errore.getAttribute.length != 0){
+                
+                $( "#error" ).effect( "shake" );
+            }
+
+
+            function emitSwal()
+            {
+                swal({
+                    title: "Stiamo provando a recuperare la tua password",
+                    text: 'Abbiamo bisogno del tuo username!',
+                    type: "question",
+                    showCancelButton: true,
+                    focusConfirm: false,
+                    confirmButtonText:
+                        '<i class="fas fa-check"></i> Inserisci!',
+                    cancelButtonText:
+                        '<i class="fa fa-close"> Chiudi!</i>'
+                }).then(function(result){
+                    if(result.value)
+                    {
+                        swal({
+                            title: 'Inserisci lo username',
+                            type: "question",
+                            showCancelButton: true,
+                            confirmButtonText:
+                                '<i class="fas fa-check"></i> Inserisci!',
+                            input: 'text',
+                            inputPlaceholder: 'Username',
+                            cancelButtonText:
+                                '<i class="fa fa-close"> Chiudi!</i>',
+                            inputValidator: async (text) => {
+                                if (!text) {
+                                    return 'Sei sicuro di aver inserito lo username?'
+                                }
+                                else
+                                {
+                                    await swal({
+                                        title: "Username ricevuto!",
+                                        html: 'Se è presente nella banca dati, verra inviata una email all\'indirizzo email associato all\'account di ' + text,
+                                        type: "success",
+                                        confirmButtonText: 'Ok!'
+                                    });
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+    </script>
+    <!-- fine script -->
+    <!--================login_part end =================-->

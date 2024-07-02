@@ -1,0 +1,129 @@
+
+
+<section class="login_part padding_bottom_100 padding_top_100">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-12">
+                <div class="login_part_text text-center" style="width: 100%">
+                    <div class="login_part_text_iner">
+                        <div class="">
+                            <h2 style="color: #fafafa">Termini e condizioni</h2>
+                            <textarea style="color: #090909" id="terms" style="resize: none;" class="form-control"  rows="25" readonly></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="//code.jquery.com/jquery-1.12.4.js"></script>
+<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script>
+    var terms =
+        'Termini e Condizioni\n' +
+        '\n' +
+        'Benvenuto su CircuitDigest!\n' +
+        '\n' +
+        'Questi termini e condizioni delineano le regole e i regolamenti per l\'utilizzo del sito Web di CircuitDigest, che si trova all\'indirizzo https://circuitdigest.com/.\n' +
+        '\n' +
+        'Accedendo a questo sito Web, assumiamo che accetti questi termini e condizioni. Non continuare a utilizzare CircuitDigest se non accetti di accettare tutti i termini e le condizioni indicati in questa pagina.\n' +
+        'Biscotti:\n' +
+        '\n' +
+        'Il sito Web utilizza i cookie per personalizzare la tua esperienza online. Accedendo a CircuitDigest, hai accettato di utilizzare i cookie richiesti.\n' +
+        '\n' +
+        'Un cookie è un file di testo che viene inserito sul tuo disco rigido da un server di una pagina web. I cookie non possono essere utilizzati per eseguire programmi o inviare virus al tuo computer. I cookie sono assegnati a te in modo univoco e possono essere letti solo da un server web nel dominio che ti ha emesso il cookie.\n' +
+        '\n' +
+        'Possiamo utilizzare i cookie per raccogliere, archiviare e tenere traccia delle informazioni a fini statistici o di marketing per far funzionare il nostro sito web. Hai la possibilità di accettare o rifiutare i cookie facoltativi. Ci sono alcuni cookie richiesti che sono necessari per il funzionamento del nostro sito web. Questi cookie non richiedono il tuo consenso in quanto funzionano sempre. Tieni presente che accettando i cookie richiesti, accetti anche i cookie di terze parti, che potrebbero essere utilizzati tramite servizi forniti da terze parti se utilizzi tali servizi sul nostro sito Web, ad esempio una finestra di visualizzazione video fornita da terze parti e integrata nel nostro sito web.\n' +
+        'Licenza:\n' +
+        '\n' +
+        'Salvo diversa indicazione, CircuitDigest e/o i suoi licenziatari detengono i diritti di proprietà intellettuale per tutto il materiale su CircuitDigest. Tutti i diritti di proprietà intellettuale sono riservati. Puoi accedervi da CircuitDigest per uso personale soggetto alle restrizioni stabilite in questi termini e condizioni.\n' +
+        '\n' +
+        'Non devi:\n' +
+        '\n' +
+        '    Copia o ripubblica materiale da CircuitDigest\n' +
+        '    Vendi, noleggia o concede in sublicenza materiale da CircuitDigest\n' +
+        '    Riproduci, duplica o copia materiale da CircuitDigest\n' +
+        '    Ridistribuisci i contenuti da CircuitDigest\n' +
+        '\n' +
+        'Il presente Accordo decorre dalla data del presente.\n' +
+        '\n' +
+        'Parti di questo sito Web offrono agli utenti l\'opportunità di pubblicare e scambiare opinioni e informazioni in determinate aree del sito Web. CircuitDigest non filtra, modifica, pubblica o rivede i Commenti prima della loro presenza sul sito web. I commenti non riflettono le opinioni e le opinioni di CircuitDigest, dei suoi agenti e/o affiliati. I commenti riflettono le opinioni e le opinioni della persona che pubblica le proprie opinioni e opinioni. Nella misura consentita dalle leggi applicabili, CircuitDigest non sarà responsabile per i Commenti o per qualsiasi responsabilità, danno o spesa causati e/o subiti a seguito di qualsiasi uso e/o pubblicazione e/o comparsa dei Commenti su questo sito web.\n' +
+        '\n' +
+        'CircuitDigest si riserva il diritto di monitorare tutti i Commenti e rimuovere tutti i Commenti che possono essere considerati inappropriati, offensivi o che causano violazione di questi Termini e Condizioni.\n' +
+        '\n' +
+        'Garantisci e dichiari che:\n' +
+        '\n' +
+        '    Hai il diritto di pubblicare i Commenti sul nostro sito Web e di avere tutte le licenze e i consensi necessari per farlo;\n' +
+        '    I Commenti non invadono alcun diritto di proprietà intellettuale, inclusi, a titolo esemplificativo, copyright, brevetti o marchi di terzi;\n' +
+        '    I Commenti non contengono materiale diffamatorio, calunnioso, offensivo, indecente o altrimenti illegale, che costituisce un\'invasione della privacy.\n' +
+        '    I Commenti non verranno utilizzati per sollecitare o promuovere affari o consuetudini o presentare attività commerciali o attività illecite.\n' +
+        '\n' +
+        'Con la presente concedi a CircuitDigest una licenza non esclusiva per utilizzare, riprodurre, modificare e autorizzare altri a utilizzare, riprodurre e modificare i tuoi commenti in qualsiasi forma, formato o supporto.\n' +
+        'Collegamento ipertestuale al nostro contenuto:\n' +
+        '\n' +
+        'Le seguenti organizzazioni possono collegarsi al nostro sito Web senza previa approvazione scritta:\n' +
+        '\n' +
+        '    Agenzie governative;\n' +
+        '    Motori di ricerca;\n' +
+        '    testate giornalistiche;\n' +
+        '    I distributori di elenchi online possono collegarsi al nostro sito Web nello stesso modo in cui collegano ipertestuali ai siti Web di altre attività quotate; e\n' +
+        '    Aziende accreditate a livello di sistema, eccetto che sollecitano organizzazioni senza scopo di lucro, centri commerciali di beneficenza e gruppi di raccolta fondi di beneficenza che potrebbero non avere collegamenti ipertestuali al nostro sito Web.\n' +
+        '\n' +
+        'Queste organizzazioni possono collegarsi alla nostra home page, a pubblicazioni o ad altre informazioni del sito Web purché il collegamento: (a) non sia in alcun modo ingannevole; (b) non implica falsamente sponsorizzazione, approvazione o approvazione della parte che collega e dei suoi prodotti e/o servizi; e (c) si inserisce nel contesto del sito della parte che collega.\n' +
+        '\n' +
+        'Potremmo prendere in considerazione e approvare altre richieste di collegamento dai seguenti tipi di organizzazioni:\n' +
+        '\n' +
+        '    fonti di informazioni comunemente note per consumatori e/o aziende;\n' +
+        '    siti della comunità dot.com;\n' +
+        '    associazioni o altri gruppi che rappresentano enti di beneficenza;\n' +
+        '    distributori di elenchi on-line;\n' +
+        '    portali Internet;\n' +
+        '    studi contabili, legali e di consulenza; e\n' +
+        '    istituzioni scolastiche e associazioni di categoria.\n' +
+        '\n' +
+        'Approveremo le richieste di collegamento da queste organizzazioni se decidiamo che: (a) il collegamento non ci fa apparire sfavorevole a noi stessi o al nostro\n' +
+        'imprese accreditate; (b) l\'organizzazione non ha alcun record negativo con noi; (c) il vantaggio per noi della visibilità del collegamento ipertestuale compensa l\'assenza di CircuitDigest; e (d) il collegamento è nel contesto di informazioni generali sulle risorse.\n' +
+        '\n' +
+        'Queste organizzazioni possono collegarsi alla nostra home page purché il collegamento: (a) non sia in alcun modo ingannevole; (b) non implica falsamente sponsorizzazione, approvazione o approvazione della parte che collega e dei suoi prodotti o servizi; e (c) si inserisce nel contesto del sito della parte che collega.\n' +
+        '\n' +
+        'Se sei una delle organizzazioni elencate nel precedente paragrafo 2 e sei interessato a collegarti al nostro sito web, devi informarci inviando una e-mail a CircuitDigest. Includi il tuo nome, il nome della tua organizzazione, le informazioni di contatto e l\'URL del tuo sito, un elenco di tutti gli URL da cui intendi collegarti al nostro sito Web e un elenco degli URL sul nostro sito a cui desideri accedere collegamento. Attendi 2-3 settimane per una risposta.\n' +
+        '\n' +
+        'Le organizzazioni approvate possono creare un collegamento ipertestuale al nostro sito Web come segue:\n' +
+        '\n' +
+        '    Utilizzando il nostro nome aziendale; o\n' +
+        '    Utilizzando il localizzatore di risorse uniforme a cui è collegato; o\n' +
+        '    L\'utilizzo di qualsiasi altra descrizione del nostro sito Web collegata a ciò ha senso nel contesto e nel formato dei contenuti sul sito della parte che effettua il collegamento.\n' +
+        '\n' +
+        'Non sarà consentito l\'uso del logo di CircuitDigest o di altre opere d\'arte per il collegamento in assenza di un accordo di licenza del marchio.\n' +
+        'Responsabilità sui contenuti:\n' +
+        '\n' +
+        'Non saremo ritenuti responsabili per qualsiasi contenuto che appare sul tuo sito web. Accetti di proteggerci e difenderci da tutti i reclami che vengono sollevati sul tuo sito web. Nessun collegamento deve apparire su alcun sito Web che possa essere interpretato come diffamatorio, osceno o criminale, o che violi, violi in altro modo o sostenga la violazione o altra violazione di diritti di terzi.\n' +
+        'Riserva dei diritti:\n' +
+        '\n' +
+        'Ci riserviamo il diritto di richiedere la rimozione di tutti i collegamenti o di qualsiasi collegamento particolare al nostro sito Web. Accetti di rimuovere immediatamente tutti i collegamenti al nostro sito Web su richiesta. Ci riserviamo inoltre il diritto di modificare questi termini e condizioni e la relativa politica di collegamento in qualsiasi momento. Collegandoti continuamente al nostro sito Web, accetti di essere vincolato e di seguire questi termini e condizioni di collegamento.\n' +
+        'Rimozione di link dal nostro sito web:\n' +
+        '\n' +
+        'Se trovi un collegamento sul nostro sito Web offensivo per qualsiasi motivo, sei libero di contattarci e informarci in qualsiasi momento. Prenderemo in considerazione le richieste di rimozione dei collegamenti, ma non siamo obbligati a rispondere direttamente all\'utente.\n' +
+        '\n' +
+        'Non garantiamo che le informazioni su questo sito Web siano corrette. Non garantiamo la sua completezza o accuratezza, né promettiamo di garantire che il sito Web rimanga disponibile o che il materiale sul sito Web sia aggiornato.\n' +
+        'Disclaimer:\n' +
+        '\n' +
+        'Nella misura massima consentita dalla legge applicabile, escludiamo tutte le dichiarazioni, garanzie e condizioni relative al nostro sito Web e all\'utilizzo di questo sito Web. Nulla in questo disclaimer:\n' +
+        '\n' +
+        '    limitare o escludere la nostra o la vostra responsabilità per morte o lesioni personali;\n' +
+        '    limitare o escludere la nostra o la vostra responsabilità per frode o falsa dichiarazione fraudolenta;\n' +
+        '    limitare qualsiasi nostra o vostra responsabilità in qualsiasi modo non consentito dalla legge applicabile; o\n' +
+        '    escludere qualsiasi nostra o tua responsabilità che potrebbe non essere esclusa dalla legge applicabile.\n' +
+        '\n' +
+        'Le limitazioni ei divieti di responsabilità stabiliti in questa Sezione e altrove in questo disclaimer: (a) sono soggetti al paragrafo precedente; e (b) disciplinano tutte le responsabilità derivanti dall\'esclusione di responsabilità, comprese le responsabilità derivanti da contratto, atto illecito e per violazione di obblighi di legge.\n' +
+        '\n' +
+        'Finché il sito Web e le informazioni e i servizi presenti sul sito Web sono forniti gratuitamente, non saremo responsabili per eventuali perdite o danni di qualsiasi natura.';
+
+
+    $('#terms').text(terms);
+
+</script>
+
+

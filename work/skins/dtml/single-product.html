@@ -1,0 +1,340 @@
+<style>
+  .star-widget label{
+    font-size: 15px;
+    color: #2f2f2f;
+    padding: 4px;
+  }
+
+  .stars{
+    color: #777777;
+  }
+</style>
+
+<!--================Single Product Area =================-->
+  <div class="product_image_area section_padding">
+    <div class="container">
+      <div class="row s_product_inner justify-content-between">
+        <div class="col-lg-7 col-xl-7">
+          <div class="product_slider_img">
+            <div id="vertical">
+                <[imgs]>   <!--  mettere il tag foreach -->
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-5 col-xl-4">
+          <div class="s_product_text">
+            <h3><[nome]></h3>
+            <h2><[prezzo]></h2>
+            <ul class="list">
+              <li>
+                <span>Categoria:</span>
+                <a class="active" href="<[catref]>"><[cat]></a>
+              </li>
+              <li>
+                <span>Disponibilità: </span>
+                <span id="disp" style="color: #0a4968"><[disponibilta]></span><br>
+                <span style="color: #ff3368"><[disp_text]></span>
+              </li>
+            </ul>
+            <div class="star-widget padding_top_10">
+              <label class="fas fa-star"></label>
+              <label class="fas fa-star"></label>
+              <label class="fas fa-star"></label>
+              <label class="fas fa-star"></label>
+              <label class="fas fa-star"></label>
+              <label id="star-val"><[rat]></label>
+            </div>
+            <p>
+              <[info]>            </p>
+            <p><[datasheet]></p>
+            <div class="card_area d-flex justify-content-between align-items-center padding_top_10">
+              <div class="product_count">
+                <span class="inumber-decrement"> <i class="ti-minus"></i></span>
+                <input id="prod-count" class="input-number" type="text" value="1" min="1" max="<[disponibilta]>" disabled>
+                <span class="number-increment"> <i class="ti-plus"></i></span>
+              </div>
+              <a id="add-to-cart-anchor" href="javascript:add_to_cart('<[codice]>')" class="custom_a active">Aggiungi al carrello</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--================End Single Product Area =================-->
+
+  <!--================Product Description Area =================-->
+  <section class="product_description_area">
+    <div class="container">
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home"
+            aria-selected="true">Descrizione</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile"
+            aria-selected="false">Specifiche</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="review-tab" data-toggle="tab" href="#review" role="tab" aria-controls="review"
+            aria-selected="false">Recensioni</a>
+        </li>
+      </ul>
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade" id="home" role="tabpanel" aria-labelledby="home-tab">
+          <p>
+            <[info]>
+          </p>
+        </div>
+        <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+          <div class="table-responsive">
+            <table class="table">
+              <tbody>
+                <[foreach]>
+                  <[specs]>
+                <[/foreach]>
+            </table>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="review" role="tabpanel" aria-labelledby="review-tab">
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="row total_rate">
+                <div class="col-6">
+                  <div class="box_total">
+                    <h5>Media</h5>
+                    <h4><[rat]></h4>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="rating_list">
+                    <h3>Basato su <[rev_c]> recensioni</h3>
+                    <ul class="list">
+                      <li>
+                        <a href="javascript:onlystars('5')">5 Stelle
+                          <i class="fa fa-star"></i>
+                          <i class="fa fa-star"></i>
+                          <i class="fa fa-star"></i>
+                          <i class="fa fa-star"></i>
+                          <i class="fa fa-star"></i>
+                          <label><[5count]> recensione/i</label>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="javascript:onlystars('4')">4 Stelle
+                          <i class="fa fa-star"></i>
+                          <i class="fa fa-star"></i>
+                          <i class="fa fa-star"></i>
+                          <i class="fa fa-star"></i>
+                          <i style="color:#777777" class="fa fa-star"></i>
+                          <label><[4count]> recensione/i</label>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="javascript:onlystars('3')">3 Stelle
+                          <i class="fa fa-star"></i>
+                          <i class="fa fa-star"></i>
+                          <i class="fa fa-star"></i>
+                          <i style="color:#777777" class="fa fa-star"></i>
+                          <i style="color:#777777" class="fa fa-star"></i>
+                          <label><[3count]> recensione/i</label>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="javascript:onlystars('2')">2 Stelle
+                          <i class="fa fa-star"></i>
+                          <i class="fa fa-star"></i>
+                          <i style="color:#777777" class="fa fa-star"></i>
+                          <i style="color:#777777" class="fa fa-star"></i>
+                          <i style="color:#777777" class="fa fa-star"></i>
+                          <label><[2count]> recensione/i</label>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="javascript:onlystars('1')">1 Stella
+                          <i class="fa fa-star"></i>
+                          <i style="color:#777777" class="fa fa-star"></i>
+                          <i style="color:#777777" class="fa fa-star"></i>
+                          <i style="color:#777777" class="fa fa-star"></i>
+                          <i style="color:#777777" class="fa fa-star"></i>
+                          <label><[1count]> recensione/i</label>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="review_list">
+                <ul id="recs" class="list-group list-group-flush">
+                  <[foreach]>
+                    <[user_rev]>
+                  <[/foreach]>
+                </ul>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="review_box">
+                <h4>Recensisci: <[nome]></h4>
+                <[can_review]>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!--================End Product Description Area =================-->
+
+
+<!--================ Raw scripts =================-->
+<script src="//code.jquery.com/jquery-1.12.4.js"></script>
+<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="skins/js/sweetalert.min.js"></script>
+
+<script>
+
+    $('.star-widget').find('label:not("#star-val")').each(
+      function (index, elem) {
+        if (index < $('.star-widget').find('#star-val').text())
+        {
+          elem.style.color = '#FFDD44FF';
+        }
+      }
+    );
+
+    function onlystars(count)
+    {
+      $('#warn-rec').remove();
+      $('#recs').find('li').each( function ()
+      {
+        if ($(this).find('#val').text() !== count)
+        {
+          $(this).css("display", "none");
+        }
+        else
+        {
+          $(this).css("display", "block");
+        }
+      });
+
+      var check = true;
+      $('#recs').find('li').each( function (){
+        if ($(this).css('display') !== 'none')
+        { check = false; }
+      });
+
+      if (check) { $('#recs').append('<h3 style="color: #777777" id="warn-rec">Nessuna recensione</h3>'); }
+    }
+
+    function setReviewVal(val)
+    {
+        $('#new-review-val').text(val);
+        $('#val-prod').val(val);
+        $("#error").remove();
+
+        switch (val)
+        {
+          case 1:
+            $('#new-review-val-text').text("Una Stella &#128549;");
+            break;
+          case 2:
+            $('#new-review-val-text').text("Due Stelle &#128577;");
+            break;
+          case 3:
+            $('#new-review-val-text').text("Tre Stelle &#128566;");
+            break;
+          case 4:
+            $('#new-review-val-text').text("Quattro Stelle &#128578;");
+            break;
+          case 5:
+            $('#new-review-val-text').text("Cinque Stelle &#129321;");
+            break;
+        }
+
+        var iter = 0;
+        $('#ul-new-review').find('i').each( function ()
+        {
+           iter++;
+           if (iter > val)
+              { $(this).css("color", "#777777"); }
+           else
+              { $(this).css("color", "#FBD600"); }
+        });
+    }
+
+    $('#insert-rev').on('click', function ()
+    {
+      if($('#val-prod').val() === "")
+      {
+          var err = "<style>.error{color: #f64e4e;}</style><div><p class=\"error\" id=\"error\">* Selezionare una valutazione</p></div>";
+          $("#error").remove();
+          $("#val-p").before(err);
+          return false;
+      }
+    });
+
+
+    function add_to_cart(prodcode)
+    {
+        $('#add-to-cart-anchor').attr('href', 'javascript:add_to_cart(\'' + prodcode + '\')');
+
+
+        var count = $('#prod-count').val();
+        if($('#disp').text() === '0') {
+          swal({
+            title: "Attenzione!",
+            text: "Non puoi aggiungere questo prodotto !",
+            type: "error"
+          })
+        }
+        else
+        {
+          $.ajax({
+            url: 'include/add-to-cart_ajax.php',
+            type: 'POST',
+            data: {
+              _count: count,
+              _prod_code: prodcode,
+            }
+          }).done(function (response) {
+            console.log(response);
+            if (response === "notlogged") {
+              swal({
+                title: "Attenzione!",
+                text: "Bisogna effettuare l'accesso per inserire nel carrello!",
+                type: "warning"
+              }).then(function () {
+                var path = window.location.href;
+                path = path.split('/');
+                path = path.slice(3, path.length);
+                path = path.join('/');
+                var redirection = 'login.php?location=' + path;
+                $('#add-to-cart-anchor').attr('href', redirection)[0].click();
+              });
+            }
+            else if (response !== "notlogged")
+            {
+              swal({
+                title: "Wow!",
+                text: "Prodotto nel carrello!",
+                type: "success"
+              }).then(function () {
+              });
+            }
+          });
+        }
+
+
+
+    }
+
+    $(document).ready(function ()
+    {
+      if ($('#datasheet-a').attr('href') === "")
+      {
+        $('#datasheet-a').hide();
+      }
+    });
+
+</script>
+
+</script>

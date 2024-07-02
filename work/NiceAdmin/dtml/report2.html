@@ -1,0 +1,78 @@
+<section class="section">
+    <div class="row">
+    <div class="col-lg-12">
+        
+            <h5 class="card-title">Prodotti</h5>
+            <table class="table table-borderless table-hover" id="report2">
+            <thead>
+                <tr>
+                <th scope="col">Seleziona</th>
+                <th scope="col">Id</th>
+                <th scope="col">Nome</th>
+                <th scope="col">Prezzo</th>
+                <th scope="col">Categoria</th>
+                </tr>
+            </thead>
+            <tbody>
+                <[foreach]>
+                    <tr>
+                        <td><input class="form-check-input" type="checkbox" id="checkbox[]" name="checkbox[]" value="<[idP]>"></td>
+                        <td><[idP]></td>
+                        <td><[nome]></td>
+                        <td><[prezzo]></td>
+                        <td><[nomeC]></td>
+                    </tr>
+                <[/foreach]>
+            </tbody>
+            </table>
+        
+    </div>
+    </div>
+</section>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    // se metto il codice qui prima del caricamento del documento allora jquery funziona su tutte le pagine della table  
+    $('#report2 tr').css({
+          cursor : 'pointer'
+      });
+
+
+$().ready(function(){
+
+    $('#report2 tbody tr ').each(function(){
+        var price = $(this).find("td:nth-child(4)").text();
+
+        priceOr = price;
+        // formatto il prezzo
+        price = parseFloat(price).toFixed(2).replace(".", ",");
+        if(price.split(",")[1].length < 2) price += "0";
+        $(this).find("td:nth-child(4)").text("€" + price);
+        // fine, grazie mastrogibbs
+      });
+		
+      dataTable2 = new simpleDatatables.DataTable("#report2", {
+	    searchable: true,
+	    fixedHeight: false,
+        perPage: 5,
+        layout: {
+            top: "Seleziona i prodotti per la promozione: {search}",
+            bottom: "{info}{pager}"
+        }
+       
+    });
+
+    $('#report2').on('click', 'tbody > tr' ,function(event){    //con tbody > tr rendo cliccabile solo il corpo della tabella non la testa
+        var key = $(this).children().eq(1).text();
+        window.location = 'product-edit.php?key='+key;
+    });
+    $('#report2').on('click', 'tr td:first-child', function(e) {
+        e.stopPropagation();
+        if($(e.target).is(':checkbox')) return; //fai nulla se è la checkbox
+        var $cb = $(this).find(':checkbox');
+        $cb.prop('checked', !$cb.is(':checked'));
+    
+    });
+        dataTable2.columns().sort(2)
+   
+});
+</script>

@@ -1,0 +1,195 @@
+    <!-- REMOVED banner part start-->
+    <[slider::show library="utility"]>
+
+    <!-- feature_part start-->
+    <section class="feature_part padding_top">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="section_tittle text-center">
+                        <h2>Dai una occhiata alle categorie</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row align-items-center justify-content-between">
+                <[ITEMS]>
+            </div>
+        </div>
+    </section>
+    <!-- upcoming_event part start-->
+
+    <!-- product_list start-->
+    <section class="product_list best_seller padding_top">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-12">
+                    <div class="section_tittle text-center">
+                        <h2>Prodotti con più stelle</h2>
+                    </div>
+                </div>
+            </div>
+            <div class="row align-items-center justify-content-between">
+                <div class="col-lg-12">
+                    <div id="better_rated" class="best_product_slider owl-carousel" >
+                        <[foreach]>
+                        <[better_rated]>
+                        <[/foreach]>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- product_list part start-->
+
+    <!-- awesome_shop start-->
+    <section id="offer-section" class="cdiv our_offer section_padding banner_part">
+        <div id="offer-div" class="text-center container insert-a-here">
+            <!-- JQUERY FILL -->
+            <div id="row-offer-div" class="row align-items-center justify-content-between">
+                <div class="col-lg-6 col-md-6">
+                    <div class="offer_img">
+                        <!-- JQUERY FILL -->
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <div class="offer_text">
+                        <!-- JQUERY FILL -->
+                        <div class="price">
+                            <!-- JQUERY FILL -->
+                        </div>
+                        <div class="date_countdown">
+                            <div id="timer">
+                                <div style="color: #313131" id="days" class="date"></div>
+                                <div style="color: #313131" id="hours" class="date"></div>
+                                <div style="color: #313131" id="minutes" class="date"></div>
+                                <div style="color: #313131" id="seconds" class="date"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- awesome_shop part start-->
+
+
+    <!--::subscribe_area part end::-->
+
+    <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="skins/js/sweetalert.min.js"></script>
+
+    <script>
+        $(document).ready(function ()
+        {
+            var urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('reg'))
+            {
+                swal({
+                    title: "Wow!",
+                    text: "Registrazione avvenuta con successo!",
+                    type: "success"
+                }).then(function() {});
+            }
+            var uri = window.location.href.toString();
+            if (uri.indexOf("?") > 0) {
+                var clean_uri = uri.substring(0, uri.indexOf("?"));
+                window.history.replaceState({}, document.title, clean_uri);
+            }
+
+            $.ajax({
+                url: 'include/get-sales_ajax.php',
+                type: 'GET'
+            }).done(function (response)
+            {
+                if (response === 'none')
+                {
+                    $('#offer-section').css('max-height', '400px');
+                    $('#offer-section').removeClass('section_padding');
+
+                    var _html = '<div style="margin-top: 50px">' +
+                                '<h2 id="sale-text">Al momento non sono presenti delle offerte!</h2>' +
+                                '<h3 style="color: #fafafa">Tornaci a trovare per scoprire nuove offerte quando disponibili!</h3>' +
+                                '</div>';
+
+                    $('.offer_text').prepend(_html);
+
+                    $('.offer_img').append('<img src="skins/img/sadsmile.png" style="margin-top: -25px; max-height: 300px; max-width: auto" alt="no-sales">');
+
+                }
+                else
+                {
+                    var data = JSON.parse(response);
+
+                    $('.offer_img').append('<img style="padding-right: 15%" id="sale-img" src=\"'+ data['img']+ '" alt="">');
+
+                    var new_price = parseFloat(data['sconto'].replace(',','.')) + ' €';
+
+                    $('.price').append('<h2><del>'+ data['prezzo']+' €</del> <h3 style="color: #fc3535">'+ new_price +'</h3></h2>');
+
+                    $('.offer_text').prepend('<h2 id="sale-text">Affrettati a cogliere l\'offerta del ' + data['nome'] + ' scontato del ' + data['percentuale'] + '%</h2>');
+
+                    $('.insert-a-here').wrap('<a id="a-click" href=\"single-product_shop.php?code=' + data['codice'] + '"></a>');
+
+                    setInterval(function () {
+                        makeTimer(data);
+                    }, 1000);
+                }
+
+
+            });
+
+
+
+        });
+
+
+        $("#better_rated").find('.single_product_text').each(
+            function ()
+            {
+                var supp = $(this);
+                $(this).find('.star-widget').find('label:not("#star-val")').each(
+                    function (index, elem) {
+                        if (index < $('#better_rated').find(supp).find('#star-val').text())
+                        {
+                            elem.style.color = '#FFDD44FF';
+                        }
+                    }
+                );
+            }
+        );
+
+        function makeTimer(data) {
+
+            var endTime = new Date(data['scadenza']);
+            endTime = (Date.parse(endTime) / 1000);
+
+            var now = new Date();
+            now = (Date.parse(now) / 1000);
+
+            var timeLeft = endTime - now;
+
+            var days = Math.floor(timeLeft / 86400);
+            var hours = Math.floor((timeLeft - (days * 86400)) / 3600);
+            var minutes = Math.floor((timeLeft - (days * 86400) - (hours * 3600)) / 60);
+            var seconds = Math.floor((timeLeft - (days * 86400) - (hours * 3600) - (minutes * 60)));
+
+            if (hours < "10") {
+                hours = "0" + hours;
+            }
+            if (minutes < "10") {
+                minutes = "0" + minutes;
+            }
+            if (seconds < "10") {
+                seconds = "0" + seconds;
+            }
+
+            $("#days").html("<span>Days</span>" + days);
+            $("#hours").html("<span>Hours</span>" + hours);
+            $("#minutes").html("<span>Minutes</span>" + minutes);
+            $("#seconds").html("<span>Seconds</span>" + seconds);
+        }
+
+
+
+    </script>

@@ -1,0 +1,156 @@
+<style>
+    .error {
+        color: red;
+    }
+
+    div.hidden_notification {
+        display: none;
+    }
+</style>
+
+<main id="main" class="main">
+    <div class="pagetitle">
+        <[message::notify library="utility" ]>
+            <h1>Riepilogo ordine</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="dashboard.php">Dashboard</a></li>
+                    <li class="breadcrumb-item">Riepilogo ordine</li>
+                </ol>
+            </nav>
+    </div><!-- End Page Title -->
+
+
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Dettaglio ordine:</h5>
+            <div class="border" style="border-color: black; border-radius: 15px; padding: 1%;">
+                <h6 class="card-title">Informazioni utente</h6>
+                <div class="row">
+                    <div class=" col-sm-2">
+                        <b>Nome:</b>
+                        <[nome]>
+                    </div>
+                    <div class=" col-sm-4">
+                        <b>Indirizzo: </b><span>
+                            <[via]>, <[numero]>, <[provincia]>, <[citta]> (<[cap]>), <[regione]>
+                        </span>
+                    </div>
+                    <div class=" col-sm-4">
+                        <b>Numero: </b><span>
+                            <[telefono]>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class=" col-sm-2">
+                        <b>Cognome:</b>
+                        <[cognome]>
+                    </div>
+                    <div class=" col-sm-4">
+                        <b>Email: </b><span>
+                            <[email]>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="border" style="border-color: black; border-radius: 15px; padding: 1%; margin-top: 10px;">
+                <h6 class="card-title">Informazioni ordine</h6>
+                <div class="row">
+                    <div class=" col-sm-2">
+                        <b>Id:</b>
+                        <[id_ordine]>
+                    </div>
+                    <div class=" col-sm-3">
+                        <b>Stato: <span id="stato" style="font-size: 0.9rem;"><[stato]></span></b>
+                    </div>
+                    <div class=" col-sm-4">
+                        <b>Data arrivo: </b><span>
+                            <[data]>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class=" col-sm-2">
+                        <b>Codice:</b>
+                        <[codice]>
+                    </div>
+                    <div class=" col-sm-3">
+                        <b>Totale: </b><span>
+                            <[totale]>
+                        </span>
+                    </div>
+                    <div class=" col-sm-5">
+                        <b>Metodo di spedizione: </b><span>
+                            <[tipologia]>, <[azienda]>, costo: <[costo]>€
+                        </span>
+                    </div>
+                </div>
+                <h6 class="card-title"> Prodotti:</h6>
+
+                <[product-order::report library="utility" name="prodotto" table="prodotto_ordine"
+                    fields="prodotto_ordine.img, prodotto_ordine.nome, prodotto_ordine.prezzo,
+                            prodotto_ordine.codice, prodotto_ordine.quantita"
+                    others="WHERE prodotto_ordine.id_ordine=<[id_ordine]>]>
+    
+        
+            
+                    <div class=" text-center" style="margin-top: 10px;">
+                        <button type="button" class="btn btn-primary" id="change_status">dafault</button>
+                    </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<script src="//code.jquery.com/jquery-1.12.4.js"></script>
+<script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+
+    switch ($('#stato').text()) {
+        case "in preparazione":
+            $("#stato").addClass("badge border-info border-1 text-primary");
+            $("#change_status").html("Prepara!");
+            break;
+        case "preparato":
+            $(this).addClass(" bg-warning text-dark");
+            $("#change_status").html("Spedisci!");
+            break;
+        case "in transito":
+            $(this).addClass(" bg-secondary text-dark");
+            $("#change_status").css('display', 'none');
+            break;
+        case "in cosnegna":
+            $(this).addClass(" bg-primary text-dark");
+            $("#change_status").css('display', 'none');
+            break;
+        case "consegnato":
+            $(this).addClass(" bg-succes text-dark");
+            $("#change_status").css('display', 'none');
+            break;
+    }
+
+    $('#change_status').on('click', function(){
+        $.ajax({
+            url: 'include/order.inc.php',
+            type: 'POST',
+            data: {
+                id: '<[id_ordine]>',
+                stato: '<[stato]>'
+            },
+            success: function(status){
+                $('#stato').text(status)
+                if(status != ""){
+                    Swal.fire({
+                        title: "Successo",
+                        text: "Cambio stato andato a buon fine",
+                        type: "success"
+                    })
+                }
+            }
+        });
+    })
+</script>

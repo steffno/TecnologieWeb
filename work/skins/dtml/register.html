@@ -1,0 +1,181 @@
+<!-- Inizio centro-->
+<section class="section_padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2 login_part">
+                <div class="col-md-8 offset-md-2 x100xauto banner_part rounded text-center d-flex align-items-center justify-content-center">
+                    <h3 class="white-text">Inserisci le tue credenziali</h3>
+                </div>
+                <div class="login_part_form">
+                    <div class="login_part_form_iner">
+                        <form id="form_r" class="row d-flex justify-content-center align-items-center" action="" method="post" novalidate="novalidate">
+                            <div class="col-md-12 form-group p_star">
+                                <div class="first-error"></div>
+                                <div class="form-floating2">
+                                    <input type="text" class="form-control" id="username" name="username" value=""
+                                           placeholder="Username" required>
+                                    <label for="username">Username</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <div class="second-error"></div>
+                                <div class="form-floating2">
+                                    <input type="password" class="form-control" id="password" name="password" value=""
+                                           placeholder="Password">
+                                    <label for="password">Password</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <div class="form-floating2">
+                                    <input type="password" class="form-control" id="password_confirm"
+                                           name="confirm_password" value="" placeholder="Conferma password">
+                                    <label for="password_confirm">Conferma password</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <div class="form-floating2">
+                                    <input type="text" class="form-control" id="email" name="email" value=""
+                                           placeholder="Email">
+                                    <label for="email">Email</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <div class="form-floating2">
+                                    <input type="text" class="form-control" id="name" name="name" value=""
+                                           placeholder="Nome">
+                                    <label for="name">Nome</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12 form-group p_star">
+                                <div class="form-floating2">
+                                    <input type="text" class="form-control" id="surname" name="surname" value=""
+                                           placeholder="Cognome">
+                                    <label for="surname">Cognome</label>
+                                </div>
+                            </div>
+                            <div class="padding_top_50 p-3 mb-4">
+                                <div class="text-center">
+                                    <input type="checkbox" name="checkbox" value="check" id="agree" />  I have read and agree to the
+                                    <a href="terms.php" target="_blank"> Terms and Conditions and Privacy Policy</a>
+                                    <br><br><button id="send_btn" style="color: white;" type="submit" value="submit" class="btn_3" >Registrati</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+ <!-- Script per far shackerare la scritta -->
+ <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+ <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+ <script>
+
+     var err = "<style>.error{color: #f64e4e;}</style><div><p class=\"error\" id=\"error1\">* Selezionare</p></div>";
+     var err2 = "<style>.error{color: #f64e4e;}</style><div><p class=\"error\" id=\"error2\">* Compilare tutti i campi</p></div>";
+     var err3 = "<style>.error{color: #f64e4e;}</style><div><p class=\"error\" id=\"error3\">* Le password non combaciano</p></div>";
+
+     $(".btn_3").on("click",
+     function()
+     {
+         if (!$("#agree")[0].checked)
+         {
+             $("#error1").remove();
+             $("#agree").before(err);
+             return false;
+         }
+         else
+             $("#error1").remove();
+
+         if ($("#username").val() === "" ||
+             $("#password").val() === "" ||
+             $("#password_confirm").val() === "" ||
+             $("#email").val() === "" ||
+             $("#name").val() === "" ||
+             $("#surname").val() === "")
+         {
+             $("#error2").remove();
+             $(".first-error").append(err2);
+             return false;
+         }
+         else
+             $("#error2").remove();
+
+         if ($("#password").val() !== $("#password_confirm").val())
+         {
+             $(".second-error").append(err3);
+             return false;
+         }
+         else
+             $("#error3").remove();
+
+
+         $('.btn_3').prop('disabled', false);
+         $('#form_r').submit(function(e){
+             $(this).unbind('submit').submit();
+         });
+
+
+     });
+
+     $("#agree").on("click", function ()
+     {
+         if ($(this)[0].checked)
+             $("#error1").remove();
+     });
+
+     $("#password").on('input', function ()
+     {
+         if ($("#password").val() === $("#password_confirm").val())
+         {
+             $("#error3").remove();
+         }
+         else
+         {
+             $("#error3").remove();
+             $(".second-error").append(err3);
+         }
+     });
+
+     $("#password_confirm").on('input', function ()
+     {
+         if ($("#password").val() === $("#password_confirm").val())
+         {
+             $("#error3").remove();
+         }
+         else
+         {
+             $("#error3").remove();
+             $(".second-error").append(err3);
+         }
+     });
+
+     $("input:not('#agree'):not('#newsletter-form-email'):not('#search_input')").on('input', function ()
+     {
+         if ($("#username").val() !== "" &&
+             $("#password").val() !== "" &&
+             $("#password_confirm").val() !== "" &&
+             $("#email").val() !== "" &&
+             $("#name").val() !== "" &&
+             $("#surname").val() !== "")
+         {
+             $("#error2").remove();
+         }
+         else
+         {
+             $("#error2").remove();
+             $(".first-error").append(err2);
+
+         }
+     });
+
+     $('#form_r').submit(function(e){
+         $(this).find(':input[type=submit]').prop('disabled', true);
+         e.preventDefault();
+     });
+
+
+
+ </script>
